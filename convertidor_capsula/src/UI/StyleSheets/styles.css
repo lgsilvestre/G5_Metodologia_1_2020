@@ -1,0 +1,32 @@
+
+.button{
+    -fx-font-family: sans-serif;
+    -fx-background-color:#559BE4;
+    -fx-text-fill: white;
+    -fx-font-weight: bold ;
+    -fx-font-size: 14px;
+}
+.button:pressed{
+    -fx-background-color:#006DB2;
+    -fx-cursor: wait;
+}
+.button:hover{
+    -fx-cursor: hand;
+}
+.text-field{
+    -fx-font-family: sans-serif;
+    -fx-background-color: white;
+    -fx-font-size: 14px;
+    -fx-text-fill: #006DB2;
+    -fx-prompt-text-fill:#559BE4; 
+}
+.text{
+    -fx-font-family: sans-serif;
+    -fx-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight:bold;
+}
+.borderPane{
+    -fx-background-color:#004382;
+    -fx-background-radius:0px;
+}
