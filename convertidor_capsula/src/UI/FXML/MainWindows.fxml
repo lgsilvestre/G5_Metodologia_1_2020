@@ -16,7 +16,7 @@
          <children>
             <HBox alignment="TOP_RIGHT" styleClass="borderPane" stylesheets="@../StyleSheets/styles.css">
                <children>
-                  <Button fx:id="helpButton" maxHeight="34.0" maxWidth="34.0" minHeight="34.0" minWidth="34.0" mnemonicParsing="false" onAction="#help" prefHeight="34.0" prefWidth="34.0" stylesheets="@../StyleSheets/styles.css" text="?" />
+                  <Button maxHeight="34.0" maxWidth="34.0" minHeight="34.0" minWidth="34.0" mnemonicParsing="false" onAction="#buttonHelp" prefHeight="34.0" prefWidth="34.0" stylesheets="@../StyleSheets/styles.css" text="?" />
                </children></HBox>
             <HBox prefHeight="57.0" prefWidth="1240.0" spacing="30.0">
                <children>
@@ -53,16 +53,16 @@
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0">
                            <children>
                               <TextField fx:id="exprField" minHeight="38.0" minWidth="480.0" onKeyTyped="#exprTyped" prefHeight="38.0" prefWidth="724.0" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" />
-                              <Button fx:id="button1" maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonOnePressed" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="«" />
-                              <Button fx:id="button2" maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonTwoPressed" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="»" />
-                              <Button fx:id="button3" maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonThreePressed" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="“" />
-                              <Button fx:id="button4" maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonFourPressed" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="”" />
-                              <Button fx:id="button5" maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonFivePressed" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="❛" />
-                              <Button fx:id="button6" maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonSixPressed" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="❜" />
-                              <Button fx:id="button7" maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonSevenPressed" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="..." />
-                              <Button fx:id="buttonInvert" maxHeight="38.0" maxWidth="90.0" minHeight="38.0" minWidth="90.0" mnemonicParsing="false" onAction="#invert" prefHeight="38.0" prefWidth="90.0" stylesheets="@../StyleSheets/styles.css" text="Invertir" />
-                              <Button fx:id="buttonPoints" maxHeight="38.0" maxWidth="70.0" minHeight="38.0" minWidth="90.0" mnemonicParsing="false" onAction="#showPoints" prefHeight="38.0" prefWidth="70.0" stylesheets="@../StyleSheets/styles.css" text="Puntos" />
-                              <Button fx:id="buttonApply" maxHeight="38.0" maxWidth="120.0" minHeight="38.0" minWidth="130.0" mnemonicParsing="false" onAction="#apply" prefHeight="38.0" prefWidth="130.0" stylesheets="@../StyleSheets/styles.css" text="Aplicar" />
+                              <Button maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonCharOne" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="«" />
+                              <Button maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonCharTwo" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="»" />
+                              <Button maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonCharThree" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="“" />
+                              <Button maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonCharFour" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="”" />
+                              <Button maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonCharFive" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="❛" />
+                              <Button maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonCharSix" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="❜" />
+                              <Button maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonCharSeven" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="..." />
+                              <Button maxHeight="38.0" maxWidth="90.0" minHeight="38.0" minWidth="90.0" mnemonicParsing="false" onAction="#buttonInvert" prefHeight="38.0" prefWidth="90.0" stylesheets="@../StyleSheets/styles.css" text="Invertir" />
+                              <Button fx:id="buttonInvert" maxHeight="38.0" maxWidth="70.0" minHeight="38.0" minWidth="90.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="70.0" stylesheets="@../StyleSheets/styles.css" text="Puntos" />
+                              <Button maxHeight="38.0" maxWidth="120.0" minHeight="38.0" minWidth="130.0" mnemonicParsing="false" onAction="#buttonApply" prefHeight="38.0" prefWidth="130.0" stylesheets="@../StyleSheets/styles.css" text="Aplicar" />
                            </children>
                         </HBox>
                      </children>
@@ -76,7 +76,7 @@
       <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
    </padding>
    <center>
-      <AnchorPane style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="canvas" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER" />
    </center>
    <stylesheets>
       <URL value="@styles.css" />

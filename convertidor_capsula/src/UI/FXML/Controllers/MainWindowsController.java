@@ -13,6 +13,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.TextFlow;
 
 /**
  * FXML Controller class
@@ -21,38 +23,15 @@ import javafx.scene.input.KeyEvent;
  */
 public class MainWindowsController implements Initializable {
 
-    @FXML
-    private Button helpButton;
-    @FXML
-    private TextField wordsField;
-    @FXML
-    private TextField xField;
-    @FXML
-    private TextField yField;
-    @FXML
-    private TextField rotationField;
-    @FXML
-    private TextField exprField;
-    @FXML
-    private Button button1;
-    @FXML
-    private Button button2;
-    @FXML
-    private Button button3;
-    @FXML
-    private Button button4;
-    @FXML
-    private Button button5;
-    @FXML
-    private Button button6;
-    @FXML
-    private Button button7;
-    @FXML
-    private Button buttonInvert;
-    @FXML
-    private Button buttonPoints;
-    @FXML
-    private Button buttonApply;
+    @FXML private TextField wordsField;
+    @FXML private TextField xField;
+    @FXML private TextField yField;
+    @FXML private TextField rotationField;
+    @FXML private TextField exprField;
+    @FXML private Button buttonInvert;
+    @FXML private AnchorPane canvas;
+    private TextFlow phrase;
+    
 
     /**
      * Initializes the controller class.
@@ -62,9 +41,6 @@ public class MainWindowsController implements Initializable {
         // TODO
     }    
 
-    @FXML
-    private void help(ActionEvent event) {
-    }
 
     @FXML
     private void wordsTyped(KeyEvent event) {
@@ -87,43 +63,43 @@ public class MainWindowsController implements Initializable {
     }
 
     @FXML
-    private void buttonOnePressed(ActionEvent event) {
+    private void buttonHelp(ActionEvent event) {
     }
 
     @FXML
-    private void buttonTwoPressed(ActionEvent event) {
+    private void buttonCharOne(ActionEvent event) {
     }
 
     @FXML
-    private void buttonThreePressed(ActionEvent event) {
+    private void buttonCharTwo(ActionEvent event) {
     }
 
     @FXML
-    private void buttonFourPressed(ActionEvent event) {
+    private void buttonCharThree(ActionEvent event) {
     }
 
     @FXML
-    private void buttonFivePressed(ActionEvent event) {
+    private void buttonCharFour(ActionEvent event) {
     }
 
     @FXML
-    private void buttonSixPressed(ActionEvent event) {
+    private void buttonCharFive(ActionEvent event) {
     }
 
     @FXML
-    private void buttonSevenPressed(ActionEvent event) {
+    private void buttonCharSix(ActionEvent event) {
     }
 
     @FXML
-    private void invert(ActionEvent event) {
+    private void buttonCharSeven(ActionEvent event) {
     }
 
     @FXML
-    private void showPoints(ActionEvent event) {
+    private void buttonInvert(ActionEvent event) {
     }
 
     @FXML
-    private void apply(ActionEvent event) {
+    private void buttonApply(ActionEvent event) {
     }
     
 }
