@@ -30,3 +30,12 @@
     -fx-background-color:#004382;
     -fx-background-radius:0px;
 }
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('AlexBrush-Regular.ttf');
+}
+
+.text-flow {
+    -fx-font-family: "Roboto";
+}

@@ -7,13 +7,17 @@ package UI.FXML.Controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 /**
@@ -32,13 +36,23 @@ public class MainWindowsController implements Initializable {
     @FXML private AnchorPane canvas;
     private TextFlow phrase;
     
+    
+    private double FSIZE_11 = 11;
+    private double FSIZE_12 = 22;
+    private double FSIZE_13 = 33;
+    private double FSIZE_14 = 44;
+    private Font defaultFont = Font.loadFont("file:AlexBrush-Regular.ttf", FSIZE_11);
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        phrase = new TextFlow();
+        phrase.setStyle("-fx-border-color: black;");
+        canvas.getChildren().add(phrase);
+        
+        
     }    
 
 
@@ -100,6 +114,83 @@ public class MainWindowsController implements Initializable {
 
     @FXML
     private void buttonApply(ActionEvent event) {
+        if(!wordsField.getText().trim().isEmpty()){
+            ObservableList itemsTF = phrase.getChildren();
+            
+            String phraseStr = wordsField.getText();
+            String[] words = phraseStr.split(" ");
+            
+            itemsTF.clear();
+            for (String word : words) {
+                Text itemTF = new Text(word+" ");
+                itemTF.setFont(defaultFont);
+                itemsTF.add(itemTF);
+            }
+            
+        }
+        if(!exprField.getText().trim().isEmpty())
+        if(!xField.getText().trim().isEmpty())
+        if(!yField.getText().trim().isEmpty())
+        if(!rotationField.getText().trim().isEmpty()){
+            
+        }
+     
+    }
+    
+    private boolean isOut(){
+        Bounds textBounds = phrase.getBoundsInParent();
+        double widthCanvas = canvas.getWidth();
+        double heightCanvas = canvas.getHeight();
+        double lowerRightCornerX = textBounds.getMaxX();
+        double lowerRightCornerY = textBounds.getMaxY();
+        double upperLeftCornerX = textBounds.getMinX();
+        double upperLeftCornerY = textBounds.getMinY();
+        double upperRightCornerX = textBounds.getMaxX();
+        double upperRightCornerY = lowerRightCornerY - upperLeftCornerY;
+        double lowerLeftCornerX = textBounds.getMinX();
+        double lowerLeftCornerY = lowerRightCornerY - upperLeftCornerY;
+        
+        
+        boolean isOut = false;
+        
+        //Cuando se sale de los límites
+        if(lowerRightCornerX > widthCanvas || lowerRightCornerY > heightCanvas){
+            isOut = true;
+        }
+        
+        if(upperRightCornerX > widthCanvas || upperRightCornerY > heightCanvas){
+            isOut = true;
+        }
+        
+        if(upperLeftCornerX > widthCanvas || upperLeftCornerY > heightCanvas){
+            isOut = true;
+        }
+        
+        if(lowerLeftCornerX > widthCanvas || lowerLeftCornerY > heightCanvas){
+            isOut = true;
+        }
+        
+        //Alguna esquina es menor a 0
+        if(lowerRightCornerX < 0 || lowerRightCornerY < 0){
+            isOut = true;
+        }
+        
+        if(upperRightCornerX < 0 || upperRightCornerY < 0){
+            isOut = true;
+        }
+        
+        if(upperLeftCornerX < 0 || upperLeftCornerY < 0){
+            isOut = true;
+        }
+        
+        if(lowerLeftCornerX < 0 || lowerLeftCornerY < 0){
+            isOut = true;
+        }
+        
+        return isOut;
+        
+        
+        
     }
     
 }
