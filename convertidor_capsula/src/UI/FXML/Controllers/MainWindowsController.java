@@ -5,6 +5,8 @@
  */
 package UI.FXML.Controllers;
 
+import Logic.Rotate;
+import Logic.Translate;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
@@ -25,7 +27,7 @@ import javafx.scene.text.TextFlow;
  *
  * @author isanfurg
  */
-public class MainWindowsController implements Initializable {
+public class MainWindowsController implements Initializable, Rotate, Translate{
 
     @FXML private TextField wordsField;
     @FXML private TextField xField;
@@ -128,12 +130,18 @@ public class MainWindowsController implements Initializable {
             }
             
         }
-        if(!exprField.getText().trim().isEmpty())
-        if(!xField.getText().trim().isEmpty())
-        if(!yField.getText().trim().isEmpty())
         if(!rotationField.getText().trim().isEmpty()){
-            
+            System.out.println("In");
+            this.rotate(phrase, Double.parseDouble(rotationField.getText()));
         }
+        if(!xField.getText().trim().isEmpty() && !yField.getText().trim().isEmpty()){
+            double x = Double.parseDouble(xField.getText());
+            double y = Double.parseDouble(yField.getText());
+            this.translate(phrase, x, y);
+        }
+        System.out.println(!rotationField.getText().trim().isEmpty());
+        if(!exprField.getText().trim().isEmpty()){}
+        
      
     }
     

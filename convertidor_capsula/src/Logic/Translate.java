@@ -13,6 +13,8 @@ import javafx.scene.text.TextFlow;
  */
 public interface Translate {
     default TextFlow translate(TextFlow text, double x, double y){
-        return null;
+        text.setLayoutX(x);
+        text.setLayoutY(y);
+        return text;
     }
 }

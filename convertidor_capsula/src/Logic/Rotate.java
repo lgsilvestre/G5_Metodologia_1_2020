@@ -13,6 +13,7 @@ import javafx.scene.text.TextFlow;
  */
 public interface Rotate {
     default TextFlow rotate(TextFlow text, double degrees){
-        return null;
+        text.setRotate(-degrees);
+        return text;
     }
 }
