@@ -5,6 +5,7 @@
  */
 package UI.FXML.Controllers;
 
+import Logic.ApplyFormat;
 import Logic.Rotate;
 import Logic.Translate;
 import java.net.URL;
@@ -27,7 +28,7 @@ import javafx.scene.text.TextFlow;
  *
  * @author isanfurg
  */
-public class MainWindowsController implements Initializable, Rotate, Translate{
+public class MainWindowsController implements Initializable, Rotate, Translate, ApplyFormat{
 
     @FXML private TextField wordsField;
     @FXML private TextField xField;
@@ -37,13 +38,9 @@ public class MainWindowsController implements Initializable, Rotate, Translate{
     @FXML private Button buttonInvert;
     @FXML private AnchorPane canvas;
     private TextFlow phrase;
+    private Font defaultFont = Font.loadFont("file:AlexBrush-Regular.ttf", 11);
     
-    
-    private double FSIZE_11 = 11;
-    private double FSIZE_12 = 22;
-    private double FSIZE_13 = 33;
-    private double FSIZE_14 = 44;
-    private Font defaultFont = Font.loadFont("file:AlexBrush-Regular.ttf", FSIZE_11);
+    private String oldPhrase = "";
 
     /**
      * Initializes the controller class.
@@ -51,10 +48,8 @@ public class MainWindowsController implements Initializable, Rotate, Translate{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         phrase = new TextFlow();
-        phrase.setStyle("-fx-border-color: black;");
-        canvas.getChildren().add(phrase);
-        
-        
+        phrase.setStyle("-fx-border-color: black;"); //Solo para desarrolladores
+        canvas.getChildren().add(phrase);    
     }    
 
 
@@ -113,34 +108,51 @@ public class MainWindowsController implements Initializable, Rotate, Translate{
     @FXML
     private void buttonInvert(ActionEvent event) {
     }
-
+    
+    /**
+     * Obtiene los datos desde los campos de texto y aplica los cambios respectivos
+     * a cada uno.
+     */
     @FXML
-    private void buttonApply(ActionEvent event) {
-        if(!wordsField.getText().trim().isEmpty()){
+    private void buttonApply() {
+        
+        /*Muestra la palabra en pantalla si y solo si el campo de texto correspondiente
+        a la palabra no esté vacío y la palabra ingresada no sea la misma que la anterior.*/
+        if(!wordsField.getText().trim().isEmpty() && !oldPhrase.equals(wordsField.getText())){
+            System.out.println("in phrase");
+            oldPhrase = wordsField.getText();
             ObservableList itemsTF = phrase.getChildren();
             
             String phraseStr = wordsField.getText();
             String[] words = phraseStr.split(" ");
-            
             itemsTF.clear();
             for (String word : words) {
-                Text itemTF = new Text(word+" ");
-                itemTF.setFont(defaultFont);
-                itemsTF.add(itemTF);
+                if(!word.equals("")){
+                    Text itemTF = new Text(word+" ");
+                    itemTF.setFont(defaultFont);
+                    itemsTF.add(itemTF);
+                }
             }
-            
         }
+        /*Aplica el formato a cada palabra de la frase si y solo si su campo de 
+        texto no esté vacío. Utiliza la interface "ApplyFormat".*/
+        if(!exprField.getText().trim().isEmpty()){
+            this.applyFormat(phrase, exprField.getText());
+        }
+        /*Rota la palabra si y solo si el campo de texto de los grados no esté
+        vacío. Utiliza la interface "Rotate".*/
         if(!rotationField.getText().trim().isEmpty()){
-            System.out.println("In");
             this.rotate(phrase, Double.parseDouble(rotationField.getText()));
         }
+        /*Obtiene una coordenada cartesiana para trasladar la palabra si y solo
+        si el campo de cada componente no está vacío. Utiliza la interface 
+        "Translate".*/
         if(!xField.getText().trim().isEmpty() && !yField.getText().trim().isEmpty()){
             double x = Double.parseDouble(xField.getText());
             double y = Double.parseDouble(yField.getText());
             this.translate(phrase, x, y);
         }
-        System.out.println(!rotationField.getText().trim().isEmpty());
-        if(!exprField.getText().trim().isEmpty()){}
+        
         
      
     }
