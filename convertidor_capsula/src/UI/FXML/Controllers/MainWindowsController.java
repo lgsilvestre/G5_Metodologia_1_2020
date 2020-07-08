@@ -6,6 +6,7 @@
 package UI.FXML.Controllers;
 
 import Logic.ApplyFormat;
+import Logic.Invert;
 import Logic.Rotate;
 import Logic.Translate;
 import java.net.URL;
@@ -28,7 +29,7 @@ import javafx.scene.text.TextFlow;
  *
  * @author isanfurg
  */
-public class MainWindowsController implements Initializable, Rotate, Translate, ApplyFormat{
+public class MainWindowsController implements Initializable, Rotate, Translate, ApplyFormat, Invert{
 
     @FXML private TextField wordsField;
     @FXML private TextField xField;
@@ -107,6 +108,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
 
     @FXML
     private void buttonInvert(ActionEvent event) {
+        this.invert(phrase);
     }
     
     /**

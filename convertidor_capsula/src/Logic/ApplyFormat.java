@@ -66,7 +66,8 @@ public interface ApplyFormat {
                 
             }
         }
+        else System.out.println("Format expr not valid");
         
-        return null;
+        return text;
     }
 }
