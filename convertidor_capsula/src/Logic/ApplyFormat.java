@@ -24,10 +24,14 @@ public interface ApplyFormat {
      * @return Contenedor gráfico de las palabras con los cambios ya aplicados. 
      */
     default TextFlow applyFormat(TextFlow text, String expr){
-        double FSIZE_11 = 11;
+        double FSIZE_11 = 18;
         double FSIZE_12 = 22;
         double FSIZE_13 = 33;
         double FSIZE_14 = 44;
+        Font regularFont = Font.loadFont("file:regular.ttf", 11);
+        Font boldFont = Font.loadFont("file:bold.ttf", 11);
+        Font italicFont = Font.loadFont("file:italic.ttf", 11);
+        Font boldItalicFont = Font.loadFont("file:bold-italic.ttf", 11);
         FormatExpr formatExpr = new FormatExpr(expr);
         
         //Si la expresión es válida, se aplican los formatos
@@ -38,32 +42,61 @@ public interface ApplyFormat {
             
             for (int i = 0; i < charactList.length && i < textItems.size(); i++) {
                 Text actualWord = (Text) textItems.get(i);
+                actualWord.setFont(regularFont);
+                boolean isRegular = false;
+                boolean isBold = false;
+                boolean isItalic = false;
+                Font font = actualWord.getFont();
+                double fontSize = font.getSize();
                 String[] characts = charactList[i];
                 for (String charact : characts) {
                     if(charact.equals("n")){
-                        actualWord.setStyle("-fx-font-weight: bold");
+                        isBold = true;
                     }
-                    
                     else if(charact.equals("s")){
                         actualWord.setUnderline(true);
                     }
                     
                     else if(charact.equals("k")){
-                        actualWord.setStyle("-fx-font-style: italic");
+                        isItalic = true;
                     }
                     else{
-                        if(charact.equals("11"))
-                            actualWord.setStyle("-fx-font-size: "+Double.toString(FSIZE_11));
-                        else if(charact.equals("12"))
-                            actualWord.setStyle("-fx-font-size: "+Double.toString(FSIZE_12));
-                        else if(charact.equals("13"))
-                            actualWord.setStyle("-fx-font-size: "+Double.toString(FSIZE_13));
-                        else
-                            actualWord.setStyle("-fx-font-size: "+Double.toString(FSIZE_14));
-                        
+                        isRegular = true;
+                        if(charact.equals("11")){
+                            fontSize = FSIZE_11;
+                        }
+                            
+                        else if(charact.equals("12")){
+                            fontSize = FSIZE_12;
+                        }
+                            
+                        else if(charact.equals("13")){
+                            fontSize = FSIZE_13;
+                        }
+                            
+                        else{
+                            fontSize = FSIZE_14;
+                        }   
                     }
                 }
-                
+                if(isRegular){
+                    regularFont = Font.loadFont("file:regular.ttf", fontSize);
+                    actualWord.setFont(regularFont);
+                    
+                }
+                if(isBold) {
+                    boldFont = Font.loadFont("file:bold.ttf", fontSize);
+                    actualWord.setFont(boldFont);
+                }
+                if (isItalic) {
+                    italicFont = Font.loadFont("file:italic.ttf", fontSize);
+                    actualWord.setFont(italicFont);
+                }
+                if(isBold && isItalic){
+                    boldItalicFont = Font.loadFont("file:bold-italic.ttf", fontSize);
+                    actualWord.setFont(boldItalicFont);
+                }
+
             }
         }
         else System.out.println("Format expr not valid");

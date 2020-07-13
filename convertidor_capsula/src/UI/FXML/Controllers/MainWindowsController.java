@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -39,7 +40,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     @FXML private Button buttonInvert;
     @FXML private AnchorPane canvas;
     private TextFlow phrase;
-    private Font defaultFont = Font.loadFont("file:AlexBrush-Regular.ttf", 11);
+    private Font regularFont = Font.loadFont("file:regular.ttf", 18);
     
     private String oldPhrase = "";
 
@@ -52,8 +53,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         phrase.setStyle("-fx-border-color: black;"); //Solo para desarrolladores
         canvas.getChildren().add(phrase);    
     }    
-
-
+    
     @FXML
     private void wordsTyped(KeyEvent event) {
     }
@@ -120,7 +120,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         
         /*Muestra la palabra en pantalla si y solo si el campo de texto correspondiente
         a la palabra no esté vacío y la palabra ingresada no sea la misma que la anterior.*/
-        if(!wordsField.getText().trim().isEmpty() && !oldPhrase.equals(wordsField.getText())){
+        if(!oldPhrase.equals(wordsField.getText())){
             System.out.println("in phrase");
             oldPhrase = wordsField.getText();
             ObservableList itemsTF = phrase.getChildren();
@@ -131,21 +131,24 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
             for (String word : words) {
                 if(!word.equals("")){
                     Text itemTF = new Text(word+" ");
-                    itemTF.setFont(defaultFont);
+                    itemTF.setFont(regularFont);
                     itemsTF.add(itemTF);
                 }
-            }
+            }               
         }
+        
         /*Aplica el formato a cada palabra de la frase si y solo si su campo de 
         texto no esté vacío. Utiliza la interface "ApplyFormat".*/
-        if(!exprField.getText().trim().isEmpty()){
+        if(!exprField.getText().trim().isEmpty() ){
             this.applyFormat(phrase, exprField.getText());
         }
+        
         /*Rota la palabra si y solo si el campo de texto de los grados no esté
         vacío. Utiliza la interface "Rotate".*/
         if(!rotationField.getText().trim().isEmpty()){
             this.rotate(phrase, Double.parseDouble(rotationField.getText()));
         }
+        
         /*Obtiene una coordenada cartesiana para trasladar la palabra si y solo
         si el campo de cada componente no está vacío. Utiliza la interface 
         "Translate".*/

@@ -1,4 +1,3 @@
-
 .button{
     -fx-font-family: sans-serif;
     -fx-background-color:#559BE4;
@@ -31,11 +30,3 @@
     -fx-background-radius:0px;
 }
 
-@font-face {
-    font-family: 'Roboto';
-    src: url('AlexBrush-Regular.ttf');
-}
-
-.text-flow {
-    -fx-font-family: "Roboto";
-}
