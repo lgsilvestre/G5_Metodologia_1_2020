@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -22,7 +23,8 @@ public class main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/UI/FXML/MainWindows.fxml"));
         
         Scene scene = new Scene(root);
-        
+        stage.setResizable(false);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

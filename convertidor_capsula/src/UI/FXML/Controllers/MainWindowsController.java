@@ -6,6 +6,7 @@
 package UI.FXML.Controllers;
 
 import Logic.ApplyFormat;
+import Logic.Drag;
 import Logic.FormatExpr;
 import Logic.Invert;
 import Logic.Rotate;
@@ -26,6 +27,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -38,7 +40,7 @@ import javafx.stage.StageStyle;
  *
  * @author isanfurg
  */
-public class MainWindowsController implements Initializable, Rotate, Translate, ApplyFormat, Invert{
+public class MainWindowsController implements Initializable, Rotate, Translate, ApplyFormat, Invert, Drag{
 
     @FXML private TextField wordsField;
     @FXML private TextField xField;
@@ -54,6 +56,8 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     @FXML  private Text translateAlert;
     @FXML private Text rotateAlert;
     @FXML private Text exprAlert;
+    @FXML
+    private BorderPane mainPane;
 
     /**
      * Initializes the controller class.
@@ -61,32 +65,93 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         phrase = new TextFlow();
+        this.drag(mainPane);
         phrase.setStyle("-fx-border-color: black;"); //Solo para desarrolladores
         canvas.getChildren().add(phrase);    
     }    
     
     @FXML
     private void wordsTyped(KeyEvent event) {
+        if(event.isControlDown()){
+            event.consume();
+            return;
+        }
+        char pressed = event.getCharacter().charAt(0);
+        if(!(Character.isLetterOrDigit(pressed) || pressed == ' ')){
+            event.consume();
+            return;
+        }
     }
 
     @FXML
     private void XTyped(KeyEvent event) {
+        if(event.isControlDown()){
+            event.consume();
+            return;
+        }
+        char pressed = event.getCharacter().charAt(0);
+        if(!Character.isDigit(pressed))event.consume(); //Limit to only numbers
+        if(xField.getText().length()>0){
+            System.out.println(xField.getText()+pressed);
+            
+            if(Integer.parseInt(xField.getText()+pressed)>400){
+                
+                event.consume();
+            }
+        }//Limit to the X position
+ 
     }
 
     @FXML
     private void yTyped(KeyEvent event) {
+                if(event.isControlDown()){
+            event.consume();
+            return;
+        }
+        char pressed = event.getCharacter().charAt(0);
+        if(!Character.isDigit(pressed))event.consume(); //Limit to only numbers
+        if(xField.getText().length()>0){
+            System.out.println(xField.getText()+pressed);
+            
+            if(Integer.parseInt(xField.getText()+pressed)>400){
+                
+                event.consume();
+            }
+        }//Limit to the Y position
     }
 
     @FXML
     private void rotationTyped(KeyEvent event) {
+        if(event.isControlDown()){
+            event.consume();
+            return;
+        }
+        char pressed = event.getCharacter().charAt(0);
+        if(!Character.isDigit(pressed)){
+            event.consume();
+            return;
+        }
+        int onField  = Integer.parseInt(rotationField.getText()+pressed);
+        if(onField>=360){
+            onField = onField%360;
+            rotationField.setText(onField+"");
+            event.consume();
+        }   
+
     }
 
     @FXML
     private void exprTyped(KeyEvent event) {
+    char pressed = event.getCharacter().charAt(0);
+        if(!Character.isLetterOrDigit(pressed)){
+            event.consume();
+            return;
+        }
     }
 
     @FXML
     private void buttonHelp(ActionEvent event) throws IOException {
+        System.out.println("No implemented jet");
 
     }
 
@@ -266,6 +331,16 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         
         
         
+    }
+
+    @FXML
+    private void buttonMinimize(ActionEvent event) {
+        ((Stage)mainPane.getScene().getWindow()).setIconified(true);
+    }
+
+    @FXML
+    private void buttonClose(ActionEvent event) {
+         System.exit(0);
     }
     
 }
