@@ -58,7 +58,11 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     @FXML private Text exprAlert;
     @FXML
     private BorderPane mainPane;
-
+    String oldW;
+    String oldX;
+    String oldY;
+    String oldR;
+    String oldE;
     /**
      * Initializes the controller class.
      */
@@ -110,10 +114,10 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         }
         char pressed = event.getCharacter().charAt(0);
         if(!Character.isDigit(pressed))event.consume(); //Limit to only numbers
-        if(xField.getText().length()>0){
-            System.out.println(xField.getText()+pressed);
+        if(yField.getText().length()>0){
+            System.out.println(yField.getText()+pressed);
             
-            if(Integer.parseInt(xField.getText()+pressed)>400){
+            if(Integer.parseInt(yField.getText()+pressed)>400){
                 
                 event.consume();
             }
@@ -142,8 +146,8 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
 
     @FXML
     private void exprTyped(KeyEvent event) {
-    char pressed = event.getCharacter().charAt(0);
-        if(!Character.isLetterOrDigit(pressed)){
+        char pressed = event.getCharacter().charAt(0);
+        if(!(Character.isLetterOrDigit(pressed) || pressed == ' '|| pressed == '+' || pressed == ',')){
             event.consume();
             return;
         }
