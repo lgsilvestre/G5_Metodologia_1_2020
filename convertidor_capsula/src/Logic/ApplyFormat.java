@@ -28,10 +28,7 @@ public interface ApplyFormat {
         double FSIZE_12 = 22;
         double FSIZE_13 = 33;
         double FSIZE_14 = 44;
-        Font regularFont = Font.loadFont("file:regular.ttf", 11);
-        Font boldFont = Font.loadFont("file:bold.ttf", 11);
-        Font italicFont = Font.loadFont("file:italic.ttf", 11);
-        Font boldItalicFont = Font.loadFont("file:bold-italic.ttf", 11);
+        Font regularFont = Font.loadFont("file:regularfix.ttf", 18);
         FormatExpr formatExpr = new FormatExpr(expr);
         
         //Si la expresión es válida, se aplican los formatos
@@ -40,65 +37,58 @@ public interface ApplyFormat {
             ObservableList textItems = text.getChildren();
             String[][] charactList = formatExpr.getCharactList();
             
-            for (int i = 0; i < charactList.length && i < textItems.size(); i++) {
-                Text actualWord = (Text) textItems.get(i);
-                actualWord.setFont(regularFont);
-                boolean isRegular = false;
-                boolean isBold = false;
-                boolean isItalic = false;
-                Font font = actualWord.getFont();
-                double fontSize = font.getSize();
-                String[] characts = charactList[i];
-                for (String charact : characts) {
-                    if(charact.equals("n")){
-                        isBold = true;
-                    }
-                    else if(charact.equals("s")){
-                        actualWord.setUnderline(true);
-                    }
-                    
-                    else if(charact.equals("k")){
-                        isItalic = true;
-                    }
-                    else{
-                        isRegular = true;
-                        if(charact.equals("11")){
-                            fontSize = FSIZE_11;
-                        }
-                            
-                        else if(charact.equals("12")){
-                            fontSize = FSIZE_12;
-                        }
-                            
-                        else if(charact.equals("13")){
-                            fontSize = FSIZE_13;
-                        }
-                            
-                        else{
-                            fontSize = FSIZE_14;
-                        }   
-                    }
-                }
-                if(isRegular){
-                    regularFont = Font.loadFont("file:regular.ttf", fontSize);
+            int j = 0;
+            int i = 0;
+            while(i < charactList.length && j < textItems.size()) {
+                Text actualWord = (Text) textItems.get(j);
+                if(!actualWord.getText().equals(" ")){
                     actualWord.setFont(regularFont);
-                    
-                }
-                if(isBold) {
-                    boldFont = Font.loadFont("file:bold.ttf", fontSize);
-                    actualWord.setFont(boldFont);
-                }
-                if (isItalic) {
-                    italicFont = Font.loadFont("file:italic.ttf", fontSize);
-                    actualWord.setFont(italicFont);
-                }
-                if(isBold && isItalic){
-                    boldItalicFont = Font.loadFont("file:bold-italic.ttf", fontSize);
-                    actualWord.setFont(boldItalicFont);
-                }
+                    boolean isRegular = false;
+                    boolean isBold = false;
+                    boolean isItalic = false;
+                    double fontSize = FSIZE_11;              
+                    String[] characts = charactList[i];
 
+                    for (String charact : characts) {
+                        if(!charact.equals("")){
+                            if     (charact.equals("n")) isBold = true;
+                            else if(charact.equals("s")) actualWord.setUnderline(true);
+                            else if(charact.equals("k")) isItalic = true;
+                            else{
+                                isRegular = true;
+                                if     (charact.equals("11")) fontSize = FSIZE_11;
+                                else if(charact.equals("12")) fontSize = FSIZE_12;
+                                else if(charact.equals("13")) fontSize = FSIZE_13;
+                                else                          fontSize = FSIZE_14;
+                            }
+                        }
+                    }
+                    Font fontChoosed = regularFont;
+
+                    if(isRegular){
+                        fontChoosed = Font.loadFont("file:regularfix.ttf", fontSize);
+                    }
+                    if(isBold) {
+                        fontChoosed = Font.loadFont("file:boldfix.ttf", fontSize);
+                    }
+                    if (isItalic) {
+                        fontChoosed = Font.loadFont("file:italicfix.ttf", fontSize);
+                    }
+                    if(isBold && isItalic){
+                        fontChoosed = Font.loadFont("file:bold-italicfix.ttf", fontSize);
+                    }
+                    actualWord.setFont(fontChoosed);
+
+                    if(j+1 < textItems.size()){
+                        Text spaceWord = (Text) textItems.get(j+1);
+                        spaceWord.setFont(fontChoosed);
+                    }
+                    i++;
+                }
+                j++;
             }
         }
+        
         else System.out.println("Format expr not valid");
         
         return text;

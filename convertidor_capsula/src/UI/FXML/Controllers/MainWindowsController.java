@@ -6,16 +6,22 @@
 package UI.FXML.Controllers;
 
 import Logic.ApplyFormat;
+import Logic.FormatExpr;
 import Logic.Invert;
 import Logic.Rotate;
 import Logic.Translate;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -24,6 +30,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -40,9 +48,12 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     @FXML private Button buttonInvert;
     @FXML private AnchorPane canvas;
     private TextFlow phrase;
-    private Font regularFont = Font.loadFont("file:regular.ttf", 18);
-    
-    private String oldPhrase = "";
+    private Font regularFont = Font.loadFont("file:regularfix.ttf", 18);
+    private Text alert;
+    @FXML private Text phraseAlert;
+    @FXML  private Text translateAlert;
+    @FXML private Text rotateAlert;
+    @FXML private Text exprAlert;
 
     /**
      * Initializes the controller class.
@@ -75,35 +86,44 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     }
 
     @FXML
-    private void buttonHelp(ActionEvent event) {
+    private void buttonHelp(ActionEvent event) throws IOException {
+
     }
 
     @FXML
     private void buttonCharOne(ActionEvent event) {
+        wordsField.setText(wordsField.getText()+"«");
     }
 
     @FXML
     private void buttonCharTwo(ActionEvent event) {
+        wordsField.setText(wordsField.getText()+"»");
     }
 
     @FXML
     private void buttonCharThree(ActionEvent event) {
+        wordsField.setText(wordsField.getText()+"“");
+        
     }
 
     @FXML
     private void buttonCharFour(ActionEvent event) {
+        wordsField.setText(wordsField.getText()+"”");
     }
 
     @FXML
     private void buttonCharFive(ActionEvent event) {
+        wordsField.setText(wordsField.getText()+"‘");
     }
 
     @FXML
     private void buttonCharSix(ActionEvent event) {
+        wordsField.setText(wordsField.getText()+"’");
     }
 
     @FXML
     private void buttonCharSeven(ActionEvent event) {
+        wordsField.setText(wordsField.getText()+"...");
     }
 
     @FXML
@@ -117,45 +137,75 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
      */
     @FXML
     private void buttonApply() {
-        
+        phraseAlert.setText("");
+        exprAlert.setText("");
+        rotateAlert.setText("");
+        translateAlert.setText("");
+        phrase.setRotate(0);
+        this.translate(phrase, 0, 0);
         /*Muestra la palabra en pantalla si y solo si el campo de texto correspondiente
         a la palabra no esté vacío y la palabra ingresada no sea la misma que la anterior.*/
-        if(!oldPhrase.equals(wordsField.getText())){
-            System.out.println("in phrase");
-            oldPhrase = wordsField.getText();
+        if(!wordsField.getText().trim().isEmpty()){
             ObservableList itemsTF = phrase.getChildren();
             
             String phraseStr = wordsField.getText();
             String[] words = phraseStr.split(" ");
             itemsTF.clear();
+            int i = 0;
             for (String word : words) {
                 if(!word.equals("")){
-                    Text itemTF = new Text(word+" ");
+                    Text itemTF = new Text(word);
                     itemTF.setFont(regularFont);
                     itemsTF.add(itemTF);
+                    i++;
+                    if(!(i==words.length)) itemsTF.add(new Text(" "));
                 }
             }               
         }
+        else phraseAlert.setText("Debe ingresar una frase");
         
         /*Aplica el formato a cada palabra de la frase si y solo si su campo de 
         texto no esté vacío. Utiliza la interface "ApplyFormat".*/
         if(!exprField.getText().trim().isEmpty() ){
-            this.applyFormat(phrase, exprField.getText());
+            FormatExpr fexp = new FormatExpr(exprField.getText());
+            if(fexp.isValid()) {
+                this.applyFormat(phrase, exprField.getText());
+                if(isOut()){
+                    translateAlert.setText("La palabra se sale de los límites");
+                    this.applyFormat(phrase, ",,");
+                }
+            }
+            else exprAlert.setText("Expresión no válida");
         }
         
         /*Rota la palabra si y solo si el campo de texto de los grados no esté
         vacío. Utiliza la interface "Rotate".*/
         if(!rotationField.getText().trim().isEmpty()){
-            this.rotate(phrase, Double.parseDouble(rotationField.getText()));
+            double degrees = Double.parseDouble(rotationField.getText());
+            if(degrees >= 0 && degrees <= 360) {
+                double oldDegrees = phrase.getRotate();
+                this.rotate(phrase, degrees);
+                if(isOut()){
+                    translateAlert.setText("La palabra se sale de los límites");
+                    this.rotate(phrase, oldDegrees);
+                }
+            }
+            else rotateAlert.setText("Grado no válido");
         }
         
         /*Obtiene una coordenada cartesiana para trasladar la palabra si y solo
         si el campo de cada componente no está vacío. Utiliza la interface 
         "Translate".*/
         if(!xField.getText().trim().isEmpty() && !yField.getText().trim().isEmpty()){
+            double oldX = phrase.getLayoutX();
+            double oldY = phrase.getLayoutY();
             double x = Double.parseDouble(xField.getText());
             double y = Double.parseDouble(yField.getText());
             this.translate(phrase, x, y);
+            if(isOut()){
+                translateAlert.setText("La palabra se sale de los límites");
+                this.translate(phrase, oldX, oldY);
+            }
         }
         
         

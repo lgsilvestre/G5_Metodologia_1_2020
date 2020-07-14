@@ -30,7 +30,8 @@ public class FormatExpr {
             for (int j = 0; j < characts.length; j++) {
                 String charact = characts[j];
                 if(!(charact.equals("n") || charact.equals("s") || charact.equals("k") || 
-                charact.equals("11") || charact.equals("12") || charact.equals("13") || charact.equals("14"))){
+                charact.equals("11") || charact.equals("12") || charact.equals("13") || charact.equals("14")
+                        || charact.equals(""))){
                     isValid = false;
                     break;
                 }
