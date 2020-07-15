@@ -51,22 +51,21 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     @FXML private TextField yField;
     @FXML private TextField rotationField;
     @FXML private TextField exprField;
-    @FXML private Button buttonInvert;
     @FXML private AnchorPane canvas;
     private TextFlow phrase;
     private Font regularFont = Font.loadFont("file:regularfix.ttf", 18);
     private Text alert;
     @FXML private Text phraseAlert;
-    @FXML  private Text translateAlert;
+    @FXML private Text translateAlert;
     @FXML private Text rotateAlert;
     @FXML private Text exprAlert;
-    @FXML
-    private BorderPane mainPane;
+    @FXML private BorderPane mainPane;
     String oldW;
     String oldX;
     String oldY;
     String oldR;
     String oldE;
+    
     /**
      * Initializes the controller class.
      */
@@ -74,10 +73,9 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     public void initialize(URL url, ResourceBundle rb) {
         phrase = new TextFlow();
         this.drag(mainPane);
-        phrase.setStyle("-fx-border-color: black;"); //Solo para desarrolladores
         canvas.getChildren().add(phrase);
-        xField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
-        yField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
+        //xField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
+        //yField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         exprField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         wordsField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         rotationField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
@@ -105,33 +103,33 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         }
         char pressed = event.getCharacter().charAt(0);
         if(!Character.isDigit(pressed))event.consume(); //Limit to only numbers
-        if(xField.getText().length()>0){
+        /*if(xField.getText().length()>0){
             System.out.println(xField.getText()+pressed);
             
             if(Integer.parseInt(xField.getText()+pressed)>400){
                 
                 event.consume();
             }
-        }//Limit to the X position
+        }//Limit to the X position*/
  
     }
 
     @FXML
     private void yTyped(KeyEvent event) {
-                if(event.isControlDown()){
+        if(event.isControlDown()){
             event.consume();
             return;
         }
         char pressed = event.getCharacter().charAt(0);
         if(!Character.isDigit(pressed))event.consume(); //Limit to only numbers
-        if(yField.getText().length()>0){
+        /*if(yField.getText().length()>0){
             System.out.println(yField.getText()+pressed);
             
             if(Integer.parseInt(yField.getText()+pressed)>400){
                 
                 event.consume();
             }
-        }//Limit to the Y position
+        }//Limit to the Y position*/
     }
 
     @FXML
@@ -145,12 +143,12 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
             event.consume();
             return;
         }
-        int onField  = Integer.parseInt(rotationField.getText()+pressed);
+        /*int onField  = Integer.parseInt(rotationField.getText()+pressed);
         if(onField>=360){
             onField = onField%360;
             rotationField.setText(onField+"");
             event.consume();
-        }   
+        }   */
 
     }
 
@@ -221,12 +219,9 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         rotateAlert.setText("");
         translateAlert.setText("");
         phrase.setRotate(0);
-        this.translate(phrase, 0, 0);
-        /*Muestra la palabra en pantalla si y solo si el campo de texto correspondiente
-        a la palabra no esté vacío y la palabra ingresada no sea la misma que la anterior.*/
+        this.translate(phrase, 10, 10);
         if(!wordsField.getText().trim().isEmpty()){
             ObservableList itemsTF = phrase.getChildren();
-            
             String phraseStr = wordsField.getText();
             String[] words = phraseStr.split(" ");
             itemsTF.clear();
@@ -239,8 +234,12 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
                     i++;
                     if(!(i==words.length)) itemsTF.add(new Text(" "));
                 }
-            }               
+            }
+
         }
+        
+
+        
         else phraseAlert.setText("Debe ingresar una frase");
         
         /*Aplica el formato a cada palabra de la frase si y solo si su campo de 
@@ -249,10 +248,6 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
             FormatExpr fexp = new FormatExpr(exprField.getText());
             if(fexp.isValid()) {
                 this.applyFormat(phrase, exprField.getText());
-                if(isOut()){
-                    translateAlert.setText("La palabra se sale de los límites");
-                    this.applyFormat(phrase, ",,");
-                }
             }
             else exprAlert.setText("Expresión no válida");
         }
@@ -262,12 +257,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         if(!rotationField.getText().trim().isEmpty()){
             double degrees = Double.parseDouble(rotationField.getText());
             if(degrees >= 0 && degrees <= 360) {
-                double oldDegrees = phrase.getRotate();
                 this.rotate(phrase, degrees);
-                if(isOut()){
-                    translateAlert.setText("La palabra se sale de los límites");
-                    this.rotate(phrase, oldDegrees);
-                }
             }
             else rotateAlert.setText("Grado no válido");
         }
@@ -276,76 +266,17 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         si el campo de cada componente no está vacío. Utiliza la interface 
         "Translate".*/
         if(!xField.getText().trim().isEmpty() && !yField.getText().trim().isEmpty()){
-            double oldX = phrase.getLayoutX();
-            double oldY = phrase.getLayoutY();
             double x = Double.parseDouble(xField.getText());
             double y = Double.parseDouble(yField.getText());
             this.translate(phrase, x, y);
-            if(isOut()){
-                translateAlert.setText("La palabra se sale de los límites");
-                this.translate(phrase, oldX, oldY);
-            }
+
         }
         
         
      
     }
     
-    private boolean isOut(){
-        Bounds textBounds = phrase.getBoundsInParent();
-        double widthCanvas = canvas.getWidth();
-        double heightCanvas = canvas.getHeight();
-        double lowerRightCornerX = textBounds.getMaxX();
-        double lowerRightCornerY = textBounds.getMaxY();
-        double upperLeftCornerX = textBounds.getMinX();
-        double upperLeftCornerY = textBounds.getMinY();
-        double upperRightCornerX = textBounds.getMaxX();
-        double upperRightCornerY = lowerRightCornerY - upperLeftCornerY;
-        double lowerLeftCornerX = textBounds.getMinX();
-        double lowerLeftCornerY = lowerRightCornerY - upperLeftCornerY;
-        
-        
-        boolean isOut = false;
-        
-        //Cuando se sale de los límites
-        if(lowerRightCornerX > widthCanvas || lowerRightCornerY > heightCanvas){
-            isOut = true;
-        }
-        
-        if(upperRightCornerX > widthCanvas || upperRightCornerY > heightCanvas){
-            isOut = true;
-        }
-        
-        if(upperLeftCornerX > widthCanvas || upperLeftCornerY > heightCanvas){
-            isOut = true;
-        }
-        
-        if(lowerLeftCornerX > widthCanvas || lowerLeftCornerY > heightCanvas){
-            isOut = true;
-        }
-        
-        //Alguna esquina es menor a 0
-        if(lowerRightCornerX < 0 || lowerRightCornerY < 0){
-            isOut = true;
-        }
-        
-        if(upperRightCornerX < 0 || upperRightCornerY < 0){
-            isOut = true;
-        }
-        
-        if(upperLeftCornerX < 0 || upperLeftCornerY < 0){
-            isOut = true;
-        }
-        
-        if(lowerLeftCornerX < 0 || lowerLeftCornerY < 0){
-            isOut = true;
-        }
-        
-        return isOut;
-        
-        
-        
-    }
+
 
     @FXML
     private void buttonMinimize(ActionEvent event) {
@@ -355,6 +286,16 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     @FXML
     private void buttonClose(ActionEvent event) {
          System.exit(0);
+    }
+
+    @FXML
+    private void points(ActionEvent event) {
+        if(!phrase.getStyle().equals("-fx-border-color: black;")){
+            phrase.setStyle("-fx-border-color: black;");
+        }
+        else{
+            phrase.setStyle(null);
+        }
     }
     
 }

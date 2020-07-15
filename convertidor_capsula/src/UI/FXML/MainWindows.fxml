@@ -88,7 +88,7 @@
                               <Button maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonCharSix" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="❜" />
                               <Button maxHeight="38.0" maxWidth="38.0" minHeight="38.0" minWidth="38.0" mnemonicParsing="false" onAction="#buttonCharSeven" prefHeight="38.0" prefWidth="38.0" stylesheets="@../StyleSheets/styles.css" text="..." />
                               <Button maxHeight="38.0" maxWidth="90.0" minHeight="38.0" minWidth="90.0" mnemonicParsing="false" onAction="#buttonInvert" prefHeight="38.0" prefWidth="90.0" stylesheets="@../StyleSheets/styles.css" text="Invertir" />
-                              <Button fx:id="buttonInvert" maxHeight="38.0" maxWidth="70.0" minHeight="38.0" minWidth="90.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="70.0" stylesheets="@../StyleSheets/styles.css" text="Puntos" />
+                              <Button maxHeight="38.0" maxWidth="70.0" minHeight="38.0" minWidth="90.0" mnemonicParsing="false" onAction="#points" prefHeight="38.0" prefWidth="70.0" stylesheets="@../StyleSheets/styles.css" text="Puntos" />
                               <Button maxHeight="38.0" maxWidth="120.0" minHeight="38.0" minWidth="130.0" mnemonicParsing="false" onAction="#buttonApply" prefHeight="38.0" prefWidth="130.0" stylesheets="@../StyleSheets/styles.css" text="Aplicar" />
                            </children>
                         </HBox>
