@@ -23,6 +23,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -163,8 +164,13 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
 
     @FXML
     private void buttonHelp(ActionEvent event) throws IOException {
-        System.out.println("No implemented jet");
-
+       FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/UI/FXML/helpWindows.fxml"));
+        Parent parent = fxmlLoader.load();
+        Scene scene = new Scene(parent);
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setScene(scene);
+        stage.showAndWait();
     }
 
     @FXML
