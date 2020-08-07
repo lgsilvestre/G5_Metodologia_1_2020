@@ -5,6 +5,8 @@
  */
 package Logic;
 
+import javafx.collections.ObservableList;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 /**
@@ -13,6 +15,15 @@ import javafx.scene.text.TextFlow;
  */
 public interface ControlPoints {
     default TextFlow showControlPoints(TextFlow text){
-        return null;
+        
+        ObservableList textChildList = text.getChildren();
+        
+        for (int i = 0; i < textChildList.size(); i++) {
+            Text textChild = (Text) textChildList.get(i);
+            if (!textChild.getText().equalsIgnoreCase(" "))
+                textChild.setText(textChild.getText()+"*");
+        }
+        
+        return text;
     }
 }

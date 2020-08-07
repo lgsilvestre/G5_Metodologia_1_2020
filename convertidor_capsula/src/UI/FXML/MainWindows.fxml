@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -11,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="mainPane" maxHeight="920.0" maxWidth="1240.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="920.0" prefWidth="1240.0" styleClass="borderPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.FXML.Controllers.MainWindowsController">
+<BorderPane fx:id="mainPane" maxHeight="920.0" maxWidth="1240.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="920.0" prefWidth="1240.0" styleClass="borderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.FXML.Controllers.MainWindowsController">
    <top>
       <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="borderPane" stylesheets="@styles.css" BorderPane.alignment="CENTER">
          <children>
@@ -31,7 +37,7 @@
                   <VBox>
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Frase" />
-                        <TextField fx:id="wordsField" minHeight="38.0" minWidth="724.0" onKeyTyped="#wordsTyped" prefHeight="38.0" prefWidth="724.0" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" />
+                        <TextField fx:id="wordsField" minHeight="38.0" minWidth="724.0" onKeyTyped="#wordsTyped" prefHeight="38.0" prefWidth="724.0" promptText="Ej: Hola Mundo" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" />
                         <Text fx:id="phraseAlert" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0">
                            <font>
                               <Font name="System Bold" size="14.0" />
@@ -44,8 +50,8 @@
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Traslacion" />
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
-                              <TextField minHeight="38.0" minWidth="88.0" onKeyTyped="#XTyped" prefHeight="38.0" prefWidth="88.0" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" fx:id="xField" />
-                              <TextField fx:id="yField" minHeight="38.0" minWidth="88.0" onKeyTyped="#yTyped" prefHeight="38.0" prefWidth="88.0" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" />
+                              <TextField minHeight="38.0" minWidth="88.0" onKeyTyped="#XTyped" prefHeight="38.0" prefWidth="88.0" promptText="X" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" fx:id="xField" />
+                              <TextField fx:id="yField" minHeight="38.0" minWidth="88.0" onKeyTyped="#yTyped" prefHeight="38.0" prefWidth="88.0" promptText="Y" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" />
                            </children>
                         </HBox>
                      </children>
@@ -53,7 +59,7 @@
                   <VBox alignment="CENTER">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Rotacion" />
-                        <TextField fx:id="rotationField" onKeyTyped="#rotationTyped" prefHeight="38.0" prefWidth="220.0" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" />
+                        <TextField fx:id="rotationField" onKeyTyped="#rotationTyped" prefHeight="38.0" prefWidth="220.0" promptText="0-360" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" />
                         <Text fx:id="rotateAlert" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0">
                            <font>
                               <Font name="System Bold" size="14.0" />
@@ -72,7 +78,7 @@
                            <children>
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <TextField fx:id="exprField" minHeight="38.0" minWidth="480.0" onKeyTyped="#exprTyped" prefHeight="38.0" prefWidth="724.0" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" />
+                                    <TextField fx:id="exprField" minHeight="38.0" minWidth="480.0" onKeyTyped="#exprTyped" prefHeight="38.0" prefWidth="724.0" promptText="Ej: n+k+12,s+13" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" />
                                     <Text fx:id="exprAlert" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0">
                                        <font>
                                           <Font name="System Bold" size="14.0" />

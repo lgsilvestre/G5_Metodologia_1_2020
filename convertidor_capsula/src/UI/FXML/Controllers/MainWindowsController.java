@@ -6,6 +6,7 @@
 package UI.FXML.Controllers;
 
 import Logic.ApplyFormat;
+import Logic.ControlPoints;
 import Logic.Drag;
 import Logic.FormatExpr;
 import Logic.Invert;
@@ -14,12 +15,10 @@ import Logic.Translate;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
@@ -29,23 +28,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
  *
  * @author isanfurg
  */
-public class MainWindowsController implements Initializable, Rotate, Translate, ApplyFormat, Invert, Drag{
+public class MainWindowsController implements Initializable, Rotate, Translate, ApplyFormat, Invert, Drag, ControlPoints{
 
     @FXML private TextField wordsField;
     @FXML private TextField xField;
@@ -296,12 +291,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
 
     @FXML
     private void points(ActionEvent event) {
-        if(!phrase.getStyle().equals("-fx-border-color: black;")){
-            phrase.setStyle("-fx-border-color: black;");
-        }
-        else{
-            phrase.setStyle(null);
-        }
+        phrase = this.showControlPoints(phrase);
     }
     
 }
