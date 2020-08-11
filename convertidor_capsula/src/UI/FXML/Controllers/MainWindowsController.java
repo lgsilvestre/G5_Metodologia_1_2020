@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.Normalizer;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -28,6 +29,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -80,9 +83,24 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         rotationField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         
     }    
-    
+    public static void limitTextField(TextField textField, int limit) {
+        UnaryOperator<Change> textLimitFilter = change -> {
+            if (change.isContentChange()) {
+                int newLength = change.getControlNewText().length();
+                if (newLength > limit) {
+                    String trimmedText = change.getControlNewText().substring(0, limit);
+                    change.setText(trimmedText);
+                    int oldLength = change.getControlText().length();
+                    change.setRange(0, oldLength);
+                }
+            }
+            return change;
+        };
+        textField.setTextFormatter(new TextFormatter(textLimitFilter));
+    } 
     @FXML
     private void wordsTyped(KeyEvent event) {
+        limitTextField( wordsField, 200);
         if(event.isControlDown()){
             event.consume();
             return;
