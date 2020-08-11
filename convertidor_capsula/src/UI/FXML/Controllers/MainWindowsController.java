@@ -14,11 +14,13 @@ import Logic.Rotate;
 import Logic.Translate;
 import java.io.IOException;
 import java.net.URL;
+import java.text.Normalizer;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
@@ -34,6 +36,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -90,7 +93,12 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
             return;
         }
     }
-
+    
+    public static String normalizeString(String str){
+        str=Normalizer.normalize(str,Normalizer.Form.NFKD);
+        return str.replaceAll("[^a-z,^A-Z,^0-9]", "");
+    }   
+    
     @FXML
     private void XTyped(KeyEvent event) {
         if(event.isControlDown()){
@@ -159,7 +167,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
 
     @FXML
     private void buttonHelp(ActionEvent event) throws IOException {
-       FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/UI/FXML/helpWindows.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/UI/FXML/helpWindows.fxml"));
         Parent parent = fxmlLoader.load();
         Scene scene = new Scene(parent);
         Stage stage = new Stage();
