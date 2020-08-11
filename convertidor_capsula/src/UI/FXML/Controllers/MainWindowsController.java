@@ -28,6 +28,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
@@ -67,6 +68,8 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     String oldY;
     String oldR;
     String oldE;
+    @FXML
+    private Label ncaracteres;
     
     /**
      * Initializes the controller class.
@@ -83,10 +86,12 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         rotationField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         
     }    
-    public static void limitTextField(TextField textField, int limit) {
+    public static void limitTextField(TextField textField, int limit, Label ncaracteres) {
         UnaryOperator<Change> textLimitFilter = change -> {
             if (change.isContentChange()) {
                 int newLength = change.getControlNewText().length();
+                String cadena = newLength+"/"+limit;
+                ncaracteres.setText(cadena);
                 if (newLength > limit) {
                     String trimmedText = change.getControlNewText().substring(0, limit);
                     change.setText(trimmedText);
@@ -100,7 +105,8 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     } 
     @FXML
     private void wordsTyped(KeyEvent event) {
-        limitTextField( wordsField, 200);
+        limitTextField( wordsField, 199, ncaracteres);
+        
         if(event.isControlDown()){
             event.consume();
             return;
