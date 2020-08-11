@@ -25,6 +25,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
@@ -55,17 +56,19 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     private TextFlow phrase;
     private Font regularFont = Font.loadFont("file:regularfix.ttf", 18);
     private Text alert;
+    @FXML private Label nChars;
     @FXML private Text phraseAlert;
     @FXML private Text translateAlert;
     @FXML private Text rotateAlert;
     @FXML private Text exprAlert;
     @FXML private BorderPane mainPane;
+    @FXML private Label wea;
     String oldW;
     String oldX;
     String oldY;
     String oldR;
     String oldE;
-    
+
     /**
      * Initializes the controller class.
      */
@@ -80,7 +83,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         wordsField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         rotationField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         
-    }    
+    }  
     
     @FXML
     private void wordsTyped(KeyEvent event) {
@@ -219,7 +222,9 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         rotateAlert.setText("");
         translateAlert.setText("");
         phrase.setRotate(0);
+        
         this.translate(phrase, 10, 10);
+        
         if(!wordsField.getText().trim().isEmpty()){
             ObservableList itemsTF = phrase.getChildren();
             String phraseStr = wordsField.getText();
@@ -275,8 +280,42 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         
      
     }
-    
+    public String saltoDeLinea(String frase){
+        if(frase.length() <= 200 && frase.length()>150){
+            String text = frase.replaceAll("(.{50})", "$1\n");
+            System.out.println(text);
+            return text;
+        }
+        if(frase.length() <= 150 && frase.length()>100){
+            String text = frase.replaceAll("(.{100})", "$1\n");
+            System.out.println(text);
+            return text;
+        }
+        if(frase.length() <= 100 && frase.length()>50){
+            String text = frase.replaceAll("(.{150})", "$1\n");
+            System.out.println(text);
+            return text;
+        }
+        if(frase.length() <= 50 && frase.length()>0){
+            String text = frase.replaceAll("(.{200})", "$1\n");
+            System.out.println(text);
+            return text;
+        }
+        else{
+            return null;
 
+        }
+    }
+    @FXML
+    private void contarCaracteres(KeyEvent event){
+        int n= wordsField.getText().length();
+
+        nChars.setText(n+"/200");
+        if (n > 200) {
+            wordsField.setStyle("-fx-background-color: RED");
+        }
+        else wordsField.setStyle(null);
+    }
 
     @FXML
     private void buttonMinimize(ActionEvent event) {
