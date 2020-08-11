@@ -56,13 +56,12 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     private TextFlow phrase;
     private Font regularFont = Font.loadFont("file:regularfix.ttf", 18);
     private Text alert;
-    @FXML private Label nChars;
+    @FXML private Text nChars;
     @FXML private Text phraseAlert;
     @FXML private Text translateAlert;
     @FXML private Text rotateAlert;
     @FXML private Text exprAlert;
     @FXML private BorderPane mainPane;
-    @FXML private Label wea;
     String oldW;
     String oldX;
     String oldY;
@@ -75,6 +74,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         phrase = new TextFlow();
+        nChars.setDisable(false);
         this.drag(mainPane);
         canvas.getChildren().add(phrase);
         //xField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
@@ -306,15 +306,21 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
 
         }
     }
+    
     @FXML
     private void contarCaracteres(KeyEvent event){
         int n= wordsField.getText().length();
 
         nChars.setText(n+"/200");
+        System.out.println(n);
         if (n > 200) {
-            wordsField.setStyle("-fx-background-color: RED");
+            nChars.setStyle("-fx-fill: RED");
+            wordsField.setStyle("-fx-border-color: RED");
+        } 
+        else {
+            nChars.setStyle("-fx-fill: WHITE");
+            wordsField.setStyle(null);
         }
-        else wordsField.setStyle(null);
     }
 
     @FXML
