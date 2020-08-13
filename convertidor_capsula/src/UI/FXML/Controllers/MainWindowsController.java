@@ -17,6 +17,8 @@ import java.net.URL;
 import java.text.Normalizer;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -63,6 +65,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     @FXML private Text rotateAlert;
     @FXML private Text exprAlert;
     @FXML private BorderPane mainPane;
+    private Pattern pat;
     String oldW;
     String oldX;
     String oldY;
@@ -77,6 +80,8 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         phrase = new TextFlow();
+        pat = Pattern.compile("[a-zA-Z0-9]");
+        
         this.drag(mainPane);
         canvas.getChildren().add(phrase);
         //xField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
@@ -103,16 +108,17 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         };
         textField.setTextFormatter(new TextFormatter(textLimitFilter));
     } 
+    
     @FXML
     private void wordsTyped(KeyEvent event) {
-        limitTextField( wordsField, 199, ncaracteres);
-        
+        limitTextField( wordsField, 200, ncaracteres);
         if(event.isControlDown()){
             event.consume();
             return;
         }
         char pressed = event.getCharacter().charAt(0);
-        if(!(Character.isLetterOrDigit(pressed) || pressed == ' ')){
+        Matcher mat = pat.matcher(pressed+"");
+        if(!(mat.matches() || pressed == ' ')){
             event.consume();
             return;
         }
