@@ -20,8 +20,6 @@ public interface RotateShape {
          * @return Contenedor gráfico de las palabras con los cambios ya aplicados. 
      */
     default TextFlow rotate(TextFlow text, double degrees){
-        //-degrees para que rote en sentido contrario a las agujas del reloj.
-        //text.setRotate(-degrees); 
         Rotate r = new Rotate(-degrees);
         text.getTransforms().clear();
         text.getTransforms().add(r);

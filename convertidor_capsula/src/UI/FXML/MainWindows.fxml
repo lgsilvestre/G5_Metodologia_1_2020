@@ -17,7 +17,6 @@
          <children>
             <HBox alignment="TOP_RIGHT" styleClass="borderPane" stylesheets="@../StyleSheets/styles.css">
                <children>
-                  <Button mnemonicParsing="false" onAction="#bounds" text="Button" />
                   <Text fx:id="translateAlert" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0">
                      <font>
                         <Font name="System Bold" size="14.0" />

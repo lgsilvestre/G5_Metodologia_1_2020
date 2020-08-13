@@ -84,28 +84,50 @@ public class NodeCorners{
     public void setHeight(double height){
         this.height = height;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private class Point{
-        private double X;
-        private double Y;
-        
-        private Point(double rotPointX, double rotPointY){
-            this.X = rotPointX;
-            this.Y = rotPointY;
-        }
 
-
-
-        
+    public Point getA() {
+        return rotatePoint;
     }
+
+    public Point getB() {
+        return B;
+    }
+
+    public Point getC() {
+        return C;
+    }
+
+    public Point getD() {
+        return D;
+    }
+
+    public void setA(Point rotatePoint) {
+        this.rotatePoint = rotatePoint;
+    }
+
+    public void setB(Point B) {
+        this.B = B;
+    }
+
+    public void setC(Point C) {
+        this.C = C;
+    }
+
+    public void setD(Point D) {
+        this.D = D;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
     
     
     

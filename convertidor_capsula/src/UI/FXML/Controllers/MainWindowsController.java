@@ -11,6 +11,7 @@ import Logic.Drag;
 import Logic.FormatExpr;
 import Logic.Invert;
 import Logic.NodeCorners;
+import Logic.Point;
 import Logic.RotateShape;
 import Logic.Translate;
 import java.io.IOException;
@@ -61,7 +62,6 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     String oldR;
     String oldE;
     NodeCorners phraseCorners;
-    
     /**
      * Initializes the controller class.
      */
@@ -105,8 +105,6 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         phraseCorners.setRotatePoint(0, 0);
         phraseCorners.updatePoints();
         if(!wordsField.getText().trim().isEmpty()){
-            
-                    
             ObservableList itemsTF = phrase.getChildren();
             String phraseStr = wordsField.getText();
             String[] words = phraseStr.split(" ");
@@ -146,7 +144,6 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         si el campo de cada componente no está vacío. Utiliza la interface 
         "Translate".*/
         if(!xField.getText().trim().isEmpty() && !yField.getText().trim().isEmpty()){
-            phraseCorners.updatePoints();
             double x = Double.parseDouble(xField.getText());
             double y = Double.parseDouble(yField.getText());
             this.translate(phrase, x, y);
@@ -157,16 +154,63 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         /*Rota la palabra si y solo si el campo de texto de los grados no esté
         vacío. Utiliza la interface "Rotate".*/
         if(!rotationField.getText().trim().isEmpty()){
-            phraseCorners.updatePoints();
             double degrees = Double.parseDouble(rotationField.getText());
+            Point oldA = phraseCorners.getA();
+            Point oldB = phraseCorners.getB();
+            Point oldC = phraseCorners.getC();
+            Point oldD = phraseCorners.getD();
+            
             if(degrees >= 0 && degrees <= 360) {
-                this.rotate(phrase, degrees);
                 phraseCorners.rotatePoints(degrees);
+                if(!isOut()){
+                    this.rotate(phrase, degrees);
+                }
+                else{
+                    rotateAlert.setText("Frase fuera de límite");
+                    phraseCorners.updatePoints();
+                    this.rotate(phrase, 0);
+                }
             }
             else rotateAlert.setText("Grado no válido");
         }
 
      
+    }
+    
+    private boolean isOut(){
+        boolean isOut = false;
+        
+        double AX = phraseCorners.getA().X;
+        double AY = -phraseCorners.getA().Y;
+        double BX = phraseCorners.getB().X;
+        double BY = -phraseCorners.getB().Y;
+        double CX = phraseCorners.getC().X;
+        double CY = -phraseCorners.getC().Y;
+        double DX = phraseCorners.getD().X;
+        double DY = -phraseCorners.getD().Y;
+        
+        double canvasWidth = canvas.getWidth();
+        double canvasHeight = canvas.getHeight();
+        
+        /*Comprobar punto A*/
+        if(AX > canvasWidth || AX < 0 || AY >canvasHeight || AY < 0){
+            isOut = true;
+        }
+        /*Comprobar punto B*/
+        if(BX > canvasWidth || BX < 0 || BY >canvasHeight || BY < 0){
+            isOut = true;
+        }
+        /*Comprobar punto C*/
+        if(CX > canvasWidth || CX < 0 || AY >canvasHeight || CY < 0){
+            isOut = true;
+        }
+        /*Comprobar punto D*/
+        if(DX > canvasWidth || DX < 0 || DY >canvasHeight || DY < 0){
+            isOut = true;
+        }
+        
+        return isOut;
+        
     }
     
     @FXML
