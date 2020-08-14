@@ -159,6 +159,23 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             }
             else exprAlert.setText("Expresión no válida");
         }
+        
+        /*Obtiene una coordenada cartesiana para trasladar la palabra si y solo
+        si el campo de cada componente no está vacío. Utiliza la interface 
+        "Translate".*/
+        if(!xField.getText().trim().isEmpty() && !yField.getText().trim().isEmpty()){
+            double x = Double.parseDouble(xField.getText());
+            double y = Double.parseDouble(yField.getText());
+            phraseCorners.translatePoints(x, y);
+            if(!isOut()){
+                this.translate(phrase, x, y);
+            }else{
+                translateAlert.setText("Traslación fuera de limite");
+                phraseCorners.updatePoints();
+                this.translate(phrase, 0,0);
+            }
+        }
+        
 
         /*Rota la palabra si y solo si el campo de texto de los grados no esté
         vacío. Utiliza la interface "Rotate".*/
@@ -179,21 +196,6 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         }
 
 
-        /*Obtiene una coordenada cartesiana para trasladar la palabra si y solo
-        si el campo de cada componente no está vacío. Utiliza la interface 
-        "Translate".*/
-        if(!xField.getText().trim().isEmpty() && !yField.getText().trim().isEmpty()){
-            double x = Double.parseDouble(xField.getText());
-            double y = Double.parseDouble(yField.getText());
-            phraseCorners.translatePoints(x, y);
-            if(!isOut()){
-                this.translate(phrase, x, y);
-            }else{
-                translateAlert.setText("Traslación fuera de limite");
-                phraseCorners.updatePoints();
-                this.translate(phrase, 1,1);
-            }
-        }
 
     }
     
