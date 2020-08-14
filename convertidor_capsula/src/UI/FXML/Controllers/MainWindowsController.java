@@ -23,12 +23,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -44,7 +42,6 @@ import javafx.stage.StageStyle;
  * @author isanfurg
  */
 public class MainWindowsController implements Initializable, Rotate, Translate, ApplyFormat, Invert, Drag, ControlPoints{
-
     @FXML private TextField wordsField;
     @FXML private TextField xField;
     @FXML private TextField yField;
@@ -74,7 +71,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         phrase = new TextFlow();
-        pat = Pattern.compile("[a-zA-Z0-9]");
+        pat = Pattern.compile("[a-zA-Z0-9?,]");
         
         this.drag(mainPane);
         canvas.getChildren().add(phrase);
@@ -132,14 +129,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         }
         char pressed = event.getCharacter().charAt(0);
         if(!Character.isDigit(pressed))event.consume(); //Limit to only numbers
-        /*if(xField.getText().length()>0){
-            System.out.println(xField.getText()+pressed);
-            
-            if(Integer.parseInt(xField.getText()+pressed)>400){
-                
-                event.consume();
-            }
-        }//Limit to the X position*/
+        
  
     }
 
@@ -152,14 +142,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         }
         char pressed = event.getCharacter().charAt(0);
         if(!Character.isDigit(pressed))event.consume(); //Limit to only numbers
-        /*if(yField.getText().length()>0){
-            System.out.println(yField.getText()+pressed);
-            
-            if(Integer.parseInt(yField.getText()+pressed)>400){
-                
-                event.consume();
-            }
-        }//Limit to the Y position*/
+       
     }
 
     @FXML
@@ -172,15 +155,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         char pressed = event.getCharacter().charAt(0);
         if(!Character.isDigit(pressed)){
             event.consume();
-            return;
         }
-        /*int onField  = Integer.parseInt(rotationField.getText()+pressed);
-        if(onField>=360){
-            onField = onField%360;
-            rotationField.setText(onField+"");
-            event.consume();
-        }   */
-
     }
 
     @FXML
@@ -195,7 +170,6 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         Matcher mat = patExpr.matcher(pressed+"");
         if(!(mat.matches())){
             event.consume();
-            return;
         }
     }
 
