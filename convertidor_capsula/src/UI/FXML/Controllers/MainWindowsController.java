@@ -23,10 +23,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -105,6 +107,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     private void wordsTyped(KeyEvent event) {
         limitTextField(wordsField, 199, ncaracteres);
         if(event.isControlDown()){
+            wordsField.undo();
             event.consume();
             return;
         }
@@ -123,6 +126,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     @FXML
     private void XTyped(KeyEvent event) {
         if(event.isControlDown()){
+            xField.undo();
             event.consume();
             return;
         }
@@ -142,6 +146,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     @FXML
     private void yTyped(KeyEvent event) {
         if(event.isControlDown()){
+            yField.undo();
             event.consume();
             return;
         }
@@ -161,6 +166,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     private void rotationTyped(KeyEvent event) {
         if(event.isControlDown()){
             event.consume();
+            rotationField.undo();
             return;
         }
         char pressed = event.getCharacter().charAt(0);
@@ -181,6 +187,11 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     private void exprTyped(KeyEvent event) {
         Pattern patExpr = Pattern.compile("[,+nks]|[1-4]");
         char pressed = event.getCharacter().charAt(0);
+        if(event.isControlDown()){
+            event.consume();
+            exprField.undo();
+            return;
+        }
         Matcher mat = patExpr.matcher(pressed+"");
         if(!(mat.matches())){
             event.consume();
