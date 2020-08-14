@@ -1,8 +1,3 @@
-    /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package UI.FXML.Controllers;
 
 import Logic.ApplyFormat;
@@ -25,11 +20,8 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -84,8 +76,8 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         
         this.drag(mainPane);
         canvas.getChildren().add(phrase);
-        //xField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
-        //yField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
+        xField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
+        yField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         exprField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         wordsField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         rotationField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
@@ -95,7 +87,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         UnaryOperator<Change> textLimitFilter = change -> {
             if (change.isContentChange()) {
                 int newLength = change.getControlNewText().length();
-                String cadena = newLength+"/"+limit;
+                String cadena = newLength+"/"+(limit+1);
                 ncaracteres.setText(cadena);
                 if (newLength > limit) {
                     String trimmedText = change.getControlNewText().substring(0, limit);
@@ -111,16 +103,15 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     
     @FXML
     private void wordsTyped(KeyEvent event) {
-        limitTextField( wordsField, 200, ncaracteres);
+        limitTextField(wordsField, 199, ncaracteres);
         if(event.isControlDown()){
             event.consume();
             return;
         }
         char pressed = event.getCharacter().charAt(0);
         Matcher mat = pat.matcher(pressed+"");
-        if(!(mat.matches() || pressed == ' ')){
+        if(!(mat.matches() || pressed == ' ') && pressed != 'ñ' && pressed != 'Ñ'){
             event.consume();
-            return;
         }
     }
     
@@ -188,8 +179,10 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
 
     @FXML
     private void exprTyped(KeyEvent event) {
+        Pattern patExpr = Pattern.compile("[,+nks]|[1-4]");
         char pressed = event.getCharacter().charAt(0);
-        if(!(Character.isLetterOrDigit(pressed) || pressed == ' '|| pressed == '+' || pressed == ',')){
+        Matcher mat = patExpr.matcher(pressed+"");
+        if(!(mat.matches())){
             event.consume();
             return;
         }
@@ -276,9 +269,6 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
             }
 
         }
-        
-
-        
         else phraseAlert.setText("Debe ingresar una frase");
         
         /*Aplica el formato a cada palabra de la frase si y solo si su campo de 
@@ -293,7 +283,7 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         
         /*Rota la palabra si y solo si el campo de texto de los grados no esté
         vacío. Utiliza la interface "Rotate".*/
-        if(!rotationField.getText().trim().isEmpty()){
+        if(!rotationField.getText().trim().isEmpty() && !isNumeric(rotationField.getText())){
             double degrees = Double.parseDouble(rotationField.getText());
             if(degrees >= 0 && degrees <= 360) {
                 this.rotate(phrase, degrees);
@@ -304,19 +294,23 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
         /*Obtiene una coordenada cartesiana para trasladar la palabra si y solo
         si el campo de cada componente no está vacío. Utiliza la interface 
         "Translate".*/
-        if(!xField.getText().trim().isEmpty() && !yField.getText().trim().isEmpty()){
+        if(!xField.getText().trim().isEmpty() && !yField.getText().trim().isEmpty() && !isNumeric(xField.getText()) && !isNumeric(yField.getText())){
             double x = Double.parseDouble(xField.getText());
             double y = Double.parseDouble(yField.getText());
             this.translate(phrase, x, y);
 
         }
-        
-        
-     
     }
     
-
-
+    private static boolean isNumeric(String cadena){
+	try {
+		Integer.parseInt(cadena);
+		return true;
+	} catch (NumberFormatException nfe){
+		return false;
+	}
+    }
+    
     @FXML
     private void buttonMinimize(ActionEvent event) {
         ((Stage)mainPane.getScene().getWindow()).setIconified(true);
@@ -331,5 +325,4 @@ public class MainWindowsController implements Initializable, Rotate, Translate, 
     private void points(ActionEvent event) {
         phrase = this.showControlPoints(phrase);
     }
-    
 }
