@@ -6,7 +6,6 @@ import Logic.Drag;
 import Logic.FormatExpr;
 import Logic.Invert;
 import Logic.NodeCorners;
-import Logic.Point;
 import Logic.RotateShape;
 import Logic.Translate;
 import java.io.IOException;
@@ -32,7 +31,6 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -85,7 +83,6 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         exprField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         wordsField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         rotationField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
-        phrase.setStyle("-fx-border-color: black;");
 
         phraseCorners = new NodeCorners(0, 0);
         phrase.widthProperty().addListener((obs, oldVal, newVal)->{
@@ -104,7 +101,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         UnaryOperator<Change> textLimitFilter = change -> {
             if (change.isContentChange()) {
                 int newLength = change.getControlNewText().length();
-                String cadena = newLength+"/"+(limit+1);
+                String cadena = newLength+"/"+(limit);
                 ncaracteres.setText(cadena);
                 if (newLength > limit) {
                     String trimmedText = change.getControlNewText().substring(0, limit);
@@ -150,15 +147,9 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
                     if(!(i==words.length)) itemsTF.add(new Text(" "));
                 }
             }
-            
-            
-
         }
-        
-
-        
         else phraseAlert.setText("Debe ingresar una frase");
-        
+
         /*Aplica el formato a cada palabra de la frase si y solo si su campo de 
         texto no esté vacío. Utiliza la interface "ApplyFormat".*/
         if(!exprField.getText().trim().isEmpty() ){
@@ -168,28 +159,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             }
             else exprAlert.setText("Expresión no válida");
         }
-        
-        
-         
-        /*Obtiene una coordenada cartesiana para trasladar la palabra si y solo
-        si el campo de cada componente no está vacío. Utiliza la interface 
-        "Translate".*/
-        if(!xField.getText().trim().isEmpty() && !yField.getText().trim().isEmpty()){
-            double x = Double.parseDouble(xField.getText());
-            double y = Double.parseDouble(yField.getText());
-            phraseCorners.translatePoints(x, y);
-            if(!isOut()){
-                this.translate(phrase, x, y);
-            }else{
-                translateAlert.setText("Traslación fuera de limite");
-                phraseCorners.updatePoints();
-                this.translate(phrase, 1,1);
-            }
-            
-            //phraseCorners.updatePoints();
 
-        }
-        
         /*Rota la palabra si y solo si el campo de texto de los grados no esté
         vacío. Utiliza la interface "Rotate".*/
         if(!rotationField.getText().trim().isEmpty()){
@@ -207,16 +177,29 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             }
             else rotateAlert.setText("Grado no válido");
         }
-        
-        
 
-     
+
+        /*Obtiene una coordenada cartesiana para trasladar la palabra si y solo
+        si el campo de cada componente no está vacío. Utiliza la interface 
+        "Translate".*/
+        if(!xField.getText().trim().isEmpty() && !yField.getText().trim().isEmpty()){
+            double x = Double.parseDouble(xField.getText());
+            double y = Double.parseDouble(yField.getText());
+            phraseCorners.translatePoints(x, y);
+            if(!isOut()){
+                this.translate(phrase, x, y);
+            }else{
+                translateAlert.setText("Traslación fuera de limite");
+                phraseCorners.updatePoints();
+                this.translate(phrase, 1,1);
+            }
+        }
+
     }
     
     
     private boolean isOut(){
         boolean isOut = false;
-        
         
         double AX = phraseCorners.getA().X;
         double AY = -phraseCorners.getA().Y;
@@ -257,7 +240,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     
     @FXML
     private void wordsTyped(KeyEvent event) {
-        limitTextField(wordsField, 199, ncaracteres);
+        limitTextField(wordsField, 35, ncaracteres);
         if(event.isControlDown()){
             wordsField.undo();
             event.consume();
