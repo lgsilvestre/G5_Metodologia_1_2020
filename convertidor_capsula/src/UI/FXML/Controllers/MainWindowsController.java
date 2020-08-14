@@ -100,13 +100,15 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         exprAlert.setText("");
         rotateAlert.setText("");
         translateAlert.setText("");
+        //wordsField.setText(saltoDeLinea(wordsField.getText()));
         phrase.setRotate(0);
         this.translate(phrase, 0, 0);
         phraseCorners.setRotatePoint(0, 0);
         phraseCorners.updatePoints();
         if(!wordsField.getText().trim().isEmpty()){
-            ObservableList itemsTF = phrase.getChildren();
             String phraseStr = wordsField.getText();
+            ObservableList itemsTF = phrase.getChildren();
+            //String phraseStr = saltoDeLinea(wordsField.getText());
             String[] words = phraseStr.split(" ");
             itemsTF.clear();
             int i = 0;
@@ -139,15 +141,23 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         }
         
         
-                
+         
         /*Obtiene una coordenada cartesiana para trasladar la palabra si y solo
         si el campo de cada componente no está vacío. Utiliza la interface 
         "Translate".*/
         if(!xField.getText().trim().isEmpty() && !yField.getText().trim().isEmpty()){
             double x = Double.parseDouble(xField.getText());
             double y = Double.parseDouble(yField.getText());
-            this.translate(phrase, x, y);
             phraseCorners.translatePoints(x, y);
+            if(!isOut()){
+                this.translate(phrase, x, y);
+            }else{
+                translateAlert.setText("Traslación fuera de limite");
+                phraseCorners.updatePoints();
+                this.translate(phrase, 1,1);
+            }
+            
+            //phraseCorners.updatePoints();
 
         }
         
@@ -155,11 +165,6 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         vacío. Utiliza la interface "Rotate".*/
         if(!rotationField.getText().trim().isEmpty()){
             double degrees = Double.parseDouble(rotationField.getText());
-            Point oldA = phraseCorners.getA();
-            Point oldB = phraseCorners.getB();
-            Point oldC = phraseCorners.getC();
-            Point oldD = phraseCorners.getD();
-            
             if(degrees >= 0 && degrees <= 360) {
                 phraseCorners.rotatePoints(degrees);
                 if(!isOut()){
@@ -173,12 +178,16 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             }
             else rotateAlert.setText("Grado no válido");
         }
+        
+        
 
      
     }
     
+    
     private boolean isOut(){
         boolean isOut = false;
+        
         
         double AX = phraseCorners.getA().X;
         double AY = -phraseCorners.getA().Y;
@@ -208,12 +217,11 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         if(DX > canvasWidth || DX < 0 || DY >canvasHeight || DY < 0){
             isOut = true;
         }
-        
+        phraseCorners.showPoints();
         return isOut;
         
     }
-    
-    @FXML
+       
     private void bounds(ActionEvent event) {
         phraseCorners.showPoints();
     }
