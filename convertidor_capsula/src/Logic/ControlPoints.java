@@ -20,8 +20,11 @@ public interface ControlPoints {
         
         for (int i = 0; i < textChildList.size(); i++) {
             Text textChild = (Text) textChildList.get(i);
-            if (!textChild.getText().equalsIgnoreCase(" "))
-                textChild.setText(textChild.getText()+"*");
+            if (!textChild.getText().equalsIgnoreCase(" ")){
+                if (textChild.getText().charAt(textChild.getText().length()-1) != '*')
+                    textChild.setText(textChild.getText()+"*");
+                else break;
+            }
         }
         
         return text;

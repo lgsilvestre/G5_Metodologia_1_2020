@@ -3,6 +3,7 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -31,12 +32,18 @@
                   <VBox>
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Frase" />
-                        <TextField fx:id="wordsField" minHeight="38.0" minWidth="724.0" onKeyTyped="#wordsTyped" prefHeight="38.0" prefWidth="724.0" promptText="Ej: Hola Mundo" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" />
+                        <TextField fx:id="wordsField" minHeight="38.0" minWidth="724.0" onKeyTyped="#wordsTyped" prefHeight="38.0" prefWidth="759.0" promptText="Ej: Hola Mundo" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" />
                         <Text fx:id="phraseAlert" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Text>
+                     </children>
+                  </VBox>
+                  <VBox layoutX="-20.0" prefHeight="73.0" prefWidth="200.0">
+                     <children>
+                        <Label prefHeight="26.0" prefWidth="10.0" />
+                        <Label fx:id="ncaracteres" prefHeight="18.0" prefWidth="100.0" text="0/200" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER">

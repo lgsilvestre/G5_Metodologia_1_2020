@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package UI.FXML.Controllers;
 
 import Logic.ApplyFormat;
@@ -16,15 +11,23 @@ import Logic.RotateShape;
 import Logic.Translate;
 import java.io.IOException;
 import java.net.URL;
+import java.text.Normalizer;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
-import javafx.scene.control.Button;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -34,6 +37,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -56,20 +60,28 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     @FXML private Text rotateAlert;
     @FXML private Text exprAlert;
     @FXML private BorderPane mainPane;
+    private Pattern pat;
     String oldW;
     String oldX;
     String oldY;
     String oldR;
     String oldE;
     NodeCorners phraseCorners;
+    @FXML
+    private Label ncaracteres;
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         phrase = new TextFlow();
+        pat = Pattern.compile("[a-zA-Z0-9?,]");
+        
         this.drag(mainPane);
         canvas.getChildren().add(phrase);
+        xField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
+        yField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         exprField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         wordsField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         rotationField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
@@ -88,6 +100,23 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         });
         
     }    
+    public static void limitTextField(TextField textField, int limit, Label ncaracteres) {
+        UnaryOperator<Change> textLimitFilter = change -> {
+            if (change.isContentChange()) {
+                int newLength = change.getControlNewText().length();
+                String cadena = newLength+"/"+(limit+1);
+                ncaracteres.setText(cadena);
+                if (newLength > limit) {
+                    String trimmedText = change.getControlNewText().substring(0, limit);
+                    change.setText(trimmedText);
+                    int oldLength = change.getControlText().length();
+                    change.setRange(0, oldLength);
+                }
+            }
+            return change;
+        };
+        textField.setTextFormatter(new TextFormatter(textLimitFilter));
+    } 
     
         
     /**
@@ -228,87 +257,86 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     
     @FXML
     private void wordsTyped(KeyEvent event) {
+        limitTextField(wordsField, 199, ncaracteres);
         if(event.isControlDown()){
+            wordsField.undo();
             event.consume();
             return;
         }
         char pressed = event.getCharacter().charAt(0);
-        if(!(Character.isLetterOrDigit(pressed) || pressed == ' ')){
+        Matcher mat = pat.matcher(pressed+"");
+        if(!(mat.matches() || pressed == ' ') && pressed != 'ñ' && pressed != 'Ñ'){
             event.consume();
-            return;
         }
     }
-
+    
+    public static String normalizeString(String str){
+        str=Normalizer.normalize(str,Normalizer.Form.NFKD);
+        return str.replaceAll("[^a-z,^A-Z,^0-9]", "");
+    }   
+    
     @FXML
     private void XTyped(KeyEvent event) {
         if(event.isControlDown()){
+            xField.undo();
             event.consume();
             return;
         }
         char pressed = event.getCharacter().charAt(0);
         if(!Character.isDigit(pressed))event.consume(); //Limit to only numbers
-        /*if(xField.getText().length()>0){
-            System.out.println(xField.getText()+pressed);
-            
-            if(Integer.parseInt(xField.getText()+pressed)>400){
-                
-                event.consume();
-            }
-        }//Limit to the X position*/
+        
  
     }
 
     @FXML
     private void yTyped(KeyEvent event) {
         if(event.isControlDown()){
+            yField.undo();
             event.consume();
             return;
         }
         char pressed = event.getCharacter().charAt(0);
         if(!Character.isDigit(pressed))event.consume(); //Limit to only numbers
-        /*if(yField.getText().length()>0){
-            System.out.println(yField.getText()+pressed);
-            
-            if(Integer.parseInt(yField.getText()+pressed)>400){
-                
-                event.consume();
-            }
-        }//Limit to the Y position*/
+       
     }
 
     @FXML
     private void rotationTyped(KeyEvent event) {
         if(event.isControlDown()){
             event.consume();
+            rotationField.undo();
             return;
         }
         char pressed = event.getCharacter().charAt(0);
         if(!Character.isDigit(pressed)){
             event.consume();
-            return;
         }
-        /*int onField  = Integer.parseInt(rotationField.getText()+pressed);
-        if(onField>=360){
-            onField = onField%360;
-            rotationField.setText(onField+"");
-            event.consume();
-        }   */
-
     }
 
     @FXML
     private void exprTyped(KeyEvent event) {
+        Pattern patExpr = Pattern.compile("[,+nks]|[1-4]");
         char pressed = event.getCharacter().charAt(0);
-        if(!(Character.isLetterOrDigit(pressed) || pressed == ' '|| pressed == '+' || pressed == ',')){
+        if(event.isControlDown()){
             event.consume();
+            exprField.undo();
             return;
+        }
+        Matcher mat = patExpr.matcher(pressed+"");
+        if(!(mat.matches())){
+            event.consume();
         }
     }
 
     @FXML
     private void buttonHelp(ActionEvent event) throws IOException {
-        System.out.println("No implemented jet");
-
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/UI/FXML/helpWindows.fxml"));
+        Parent parent = fxmlLoader.load();
+        Scene scene = new Scene(parent);
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setScene(scene);
+        stage.showAndWait();
     }
 
     @FXML
@@ -353,8 +381,15 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     }
 
     
-
-
+    private static boolean isNumeric(String cadena){
+	try {
+		Integer.parseInt(cadena);
+		return true;
+	} catch (NumberFormatException nfe){
+		return false;
+	}
+    }
+    
     @FXML
     private void buttonMinimize(ActionEvent event) {
         ((Stage)mainPane.getScene().getWindow()).setIconified(true);
