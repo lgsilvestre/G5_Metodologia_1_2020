@@ -22,7 +22,7 @@ public interface ControlPoints {
             Text textChild = (Text) textChildList.get(i);
             if (!textChild.getText().equalsIgnoreCase(" ")){
                 if (textChild.getText().charAt(textChild.getText().length()-1) != '*')
-                    textChild.setText(textChild.getText()+"*");
+                    textChild.setText("*"+textChild.getText()+"*");
                 else break;
             }
         }
