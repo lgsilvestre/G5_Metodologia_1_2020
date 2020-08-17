@@ -75,7 +75,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     public void initialize(URL url, ResourceBundle rb) {
         phrase = new TextFlow();
         pat = Pattern.compile("[a-zA-Z0-9?,]");
-        
+        phrase.setStyle("-fx-rotate: -90;");
         this.drag(mainPane);
         canvas.getChildren().add(phrase);
         xField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
@@ -176,13 +176,13 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             }
         }
         
-
         /*Rota la palabra si y solo si el campo de texto de los grados no esté
         vacío. Utiliza la interface "Rotate".*/
         if(!rotationField.getText().trim().isEmpty()){
             double degrees = Double.parseDouble(rotationField.getText());
             if(degrees >= 0 && degrees <= 360) {
                 phraseCorners.rotatePoints(degrees);
+                System.out.println("GRADOS");
                 if(!isOut()){
                     this.rotate(phrase, degrees);
                 }
@@ -193,16 +193,13 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
                 }
             }
             else rotateAlert.setText("Grado no válido");
-        }
-
-
-
+        } else this.rotate(phrase, 0);
     }
     
     
     private boolean isOut(){
         boolean isOut = false;
-        
+        System.out.println("--------------------------------------------");
         double AX = phraseCorners.getA().X;
         double AY = -phraseCorners.getA().Y;
         double BX = phraseCorners.getB().X;
@@ -243,6 +240,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     @FXML
     private void wordsTyped(KeyEvent event) {
         limitTextField(wordsField, 35, ncaracteres);
+        System.out.println(wordsField.getText());
         if(event.isControlDown()){
             wordsField.undo();
             event.consume();

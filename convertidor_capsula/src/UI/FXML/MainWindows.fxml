@@ -33,7 +33,7 @@
                   <VBox>
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Frase" />
-                        <TextField fx:id="wordsField" minHeight="38.0" minWidth="724.0" onKeyTyped="#wordsTyped" prefHeight="38.0" prefWidth="759.0" promptText="Ej: Hola Mundo" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" />
+                        <TextField fx:id="wordsField" minHeight="38.0" minWidth="724.0" onKeyReleased="#wordsTyped" prefHeight="38.0" prefWidth="759.0" promptText="Ej: Hola Mundo" styleClass="text-field" stylesheets="@../StyleSheets/styles.css" />
                         <Text fx:id="phraseAlert" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0">
                            <font>
                               <Font name="System Bold" size="14.0" />

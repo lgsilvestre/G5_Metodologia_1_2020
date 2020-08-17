@@ -20,7 +20,7 @@ public interface RotateShape {
          * @return Contenedor gráfico de las palabras con los cambios ya aplicados. 
      */
     default TextFlow rotate(TextFlow text, double degrees){
-        Rotate r = new Rotate(-degrees);
+        Rotate r = new Rotate(-degrees, text.getWidth()/2, text.getHeight()/2);
         text.getTransforms().clear();
         text.getTransforms().add(r);
         return text;
