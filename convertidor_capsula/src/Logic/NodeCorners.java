@@ -28,29 +28,34 @@ public class NodeCorners{
         this.degrees = Math.toRadians(degrees);
         /*Vector de traslación para llevar el punto de rotación al origen y trasladar
           los otros puntos*/
+        System.out.println("ANTES DE CAMBIAR");
+        this.showPoints();
         translVector = new Point(-rotatePoint.X, -rotatePoint.Y);
         rotatePoint = new Point(0, 0);
-       
+        
         
         /*Aplica el vector de traslación  a los puntos*/
+        
         B = new Point(B.X + translVector.X, B.Y + translVector.Y);
         C = new Point(C.X + translVector.X, C.Y + translVector.Y);
-        D = new Point(D.X + translVector.X, D.Y + translVector.Y);
-
+        D = new Point(D.X + translVector.X, D.Y + translVector.Y); 
+        
+        System.out.println("DESPUES DE CAMBIAR");
+        this.showPoints();
         
         /*Aplica la rotación de los puntos respecto al origen*/
-        B = new Point(B.X*Math.cos(this.degrees)-B.Y*Math.sin(this.degrees), B.X*Math.sin(this.degrees)+B.Y*Math.cos(this.degrees));
-        C = new Point(C.X*Math.cos(this.degrees)-C.Y*Math.sin(this.degrees), C.X*Math.sin(this.degrees)+C.Y*Math.cos(this.degrees));
-        D = new Point(D.X*Math.cos(this.degrees)-D.Y*Math.sin(this.degrees), D.X*Math.sin(this.degrees)+D.Y*Math.cos(this.degrees));
-
+        B = new Point(B.X/2*Math.cos(this.degrees)-B.Y/2*Math.sin(this.degrees), B.X/2*Math.sin(this.degrees)+B.Y/2*Math.cos(this.degrees));
+        C = new Point(C.X/2*Math.cos(this.degrees)-C.Y/2*Math.sin(this.degrees), C.X/2*Math.sin(this.degrees)+C.Y/2*Math.cos(this.degrees));
+        D = new Point(D.X/2*Math.cos(this.degrees)-D.Y/2*Math.sin(this.degrees), D.X/2*Math.sin(this.degrees)+D.Y/2*Math.cos(this.degrees));
+this.showPoints();
         
         /*Devuelve los puntos a su posición original*/
         translVector = new Point(-translVector.X, -translVector.Y);
         rotatePoint = new Point(translVector.X, translVector.Y);
+        
         B = new Point(B.X + translVector.X, B.Y + translVector.Y);
         C = new Point(C.X + translVector.X, C.Y + translVector.Y);
         D = new Point(D.X + translVector.X, D.Y + translVector.Y);
-        
     }
     
     public void translatePoints(double X, double Y){

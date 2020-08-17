@@ -77,7 +77,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     public void initialize(URL url, ResourceBundle rb) {
         phrase = new TextFlow();
         pat = Pattern.compile("[a-zA-Z0-9?,]");
-        
+        phrase.setStyle("-fx-rotate: -90;");
         this.drag(mainPane);
         canvas.getChildren().add(phrase);
         xField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
@@ -184,7 +184,6 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             this.translate(phrase, x, y);
         }
         
-
         /*Rota la palabra si y solo si el campo de texto de los grados no esté
         vacío. Utiliza la interface "Rotate".*/
         if(!rotationField.getText().trim().isEmpty()){
@@ -226,6 +225,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     @FXML
     private void wordsTyped(KeyEvent event) {
         limitTextField(wordsField, 35, ncaracteres);
+        System.out.println(wordsField.getText());
         if(event.isControlDown()){
             wordsField.undo();
             event.consume();
