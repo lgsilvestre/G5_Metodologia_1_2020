@@ -59,14 +59,14 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     @FXML private Text exprAlert;
     @FXML private BorderPane mainPane;
     private Pattern pat;
+    private boolean points = false;
     String oldW;
     String oldX;
     String oldY;
     String oldR;
     String oldE;
     NodeCorners phraseCorners;
-    @FXML
-    private Label ncaracteres;
+    @FXML private Label ncaracteres;
     
     /**
      * Initializes the controller class.
@@ -194,6 +194,8 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             }
             else rotateAlert.setText("Grado no válido");
         } else this.rotate(phrase, 0);
+        
+        if (points) this.showControlPoints(phrase);
     }
     
     
@@ -252,11 +254,6 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             event.consume();
         }
     }
-    
-    public static String normalizeString(String str){
-        str=Normalizer.normalize(str,Normalizer.Form.NFKD);
-        return str.replaceAll("[^a-z,^A-Z,^0-9]", "");
-    }   
     
     @FXML
     private void XTyped(KeyEvent event) {
@@ -362,7 +359,6 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     private void buttonInvert(ActionEvent event) {
         this.invert(phrase);
     }
-
     
     private static boolean isNumeric(String cadena){
 	try {
@@ -385,9 +381,12 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
 
     @FXML
     private void points(ActionEvent event) {
-        phrase = this.showControlPoints(phrase);
+        if (!points){
+            phrase = this.showControlPoints(phrase);
+            points = true;
+        } else {
+            phrase = this.hideControlPoints(phrase);
+            points = false;
+        }
     }
-
-
-    
 }
