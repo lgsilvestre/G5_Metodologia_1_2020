@@ -10,7 +10,6 @@ import Logic.RotateShape;
 import Logic.Translate;
 import java.io.IOException;
 import java.net.URL;
-import java.text.Normalizer;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
