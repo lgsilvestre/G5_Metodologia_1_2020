@@ -20,6 +20,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -65,7 +66,9 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     String oldR;
     String oldE;
     NodeCorners phraseCorners;
-    @FXML private Label ncaracteres;
+    @FXML
+    private Label ncaracteres;
+    Bounds canvasBounds = null;
     
     /**
      * Initializes the controller class.
@@ -93,6 +96,18 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             System.out.println("new height: "+newVal);
             phraseCorners.setHeight(newVal.doubleValue());
             phraseCorners.updatePoints();
+        });
+        
+        phrase.layoutBoundsProperty().addListener((args, oldValue, newValue)->{
+            Bounds b = phrase.localToParent(newValue);
+            System.out.println("Listening");
+            System.out.println("New value: "+b);
+            System.out.println("Listener contains: "+canvasBounds.contains(b));
+            if(!canvasBounds.contains(b)){
+                translateAlert.setText("Frase fuera de limite");
+                setDefault();
+            }
+            
         });
         
     }    
@@ -127,7 +142,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         translateAlert.setText("");
         //wordsField.setText(saltoDeLinea(wordsField.getText()));
         phrase.setRotate(0);
-        this.translate(phrase, 0, 0);
+        this.translate(phrase, 10, 10);
         phraseCorners.setRotatePoint(0, 0);
         phraseCorners.updatePoints();
         if(!wordsField.getText().trim().isEmpty()){
@@ -144,6 +159,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
                     itemsTF.add(itemTF);
                     i++;
                     if(!(i==words.length)) itemsTF.add(new Text(" "));
+                    Object object = new Object();
                 }
             }
         }
@@ -165,14 +181,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         if(!xField.getText().trim().isEmpty() && !yField.getText().trim().isEmpty()){
             double x = Double.parseDouble(xField.getText());
             double y = Double.parseDouble(yField.getText());
-            phraseCorners.translatePoints(x, y);
-            if(!isOut()){
-                this.translate(phrase, x, y);
-            }else{
-                translateAlert.setText("Traslación fuera de limite");
-                phraseCorners.updatePoints();
-                this.translate(phrase, 0,0);
-            }
+            this.translate(phrase, x, y);
         }
         
         /*Rota la palabra si y solo si el campo de texto de los grados no esté
@@ -180,62 +189,34 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         if(!rotationField.getText().trim().isEmpty()){
             double degrees = Double.parseDouble(rotationField.getText());
             if(degrees >= 0 && degrees <= 360) {
-                phraseCorners.rotatePoints(degrees);
-                System.out.println("GRADOS");
-                if(!isOut()){
-                    this.rotate(phrase, degrees);
-                }
-                else{
-                    rotateAlert.setText("Frase fuera de límite");
-                    phraseCorners.updatePoints();
-                    this.rotate(phrase, 0);
-                }
+                this.rotate(phrase, degrees);
             }
             else rotateAlert.setText("Grado no válido");
         } else this.rotate(phrase, 0);
-        
         if (points) this.showControlPoints(phrase);
+        if(isOut()){
+            translateAlert.setText("Frase fuera de limite");
+            setDefault();
+        }
     }
     
     
     private boolean isOut(){
-        boolean isOut = false;
-        System.out.println("--------------------------------------------");
-        double AX = phraseCorners.getA().X;
-        double AY = -phraseCorners.getA().Y;
-        double BX = phraseCorners.getB().X;
-        double BY = -phraseCorners.getB().Y;
-        double CX = phraseCorners.getC().X;
-        double CY = -phraseCorners.getC().Y;
-        double DX = phraseCorners.getD().X;
-        double DY = -phraseCorners.getD().Y;
+        Bounds phraseBounds = phrase.getBoundsInParent();
+        if(canvasBounds == null) canvasBounds = canvas.getBoundsInLocal();
         
-        double canvasWidth = canvas.getWidth();
-        double canvasHeight = canvas.getHeight();
+        /*System.out.println(canvasBounds.toString());
+        System.out.println(phraseBounds.toString());
+        System.out.println("Contains: "+canvasBounds.contains(canvasBounds));*/
         
-        /*Comprobar punto A*/
-        if(AX > canvasWidth || AX < 0 || AY >canvasHeight || AY < 0){
-            isOut = true;
-        }
-        /*Comprobar punto B*/
-        if(BX > canvasWidth || BX < 0 || BY >canvasHeight || BY < 0){
-            isOut = true;
-        }
-        /*Comprobar punto C*/
-        if(CX > canvasWidth || CX < 0 || AY >canvasHeight || CY < 0){
-            isOut = true;
-        }
-        /*Comprobar punto D*/
-        if(DX > canvasWidth || DX < 0 || DY >canvasHeight || DY < 0){
-            isOut = true;
-        }
-        phraseCorners.showPoints();
-        return isOut;
+        return !canvasBounds.contains(phraseBounds);
         
     }
        
-    private void bounds(ActionEvent event) {
-        phraseCorners.showPoints();
+    private void setDefault(){
+        this.rotate(phrase, 0);
+        this.translate(phrase, 10, 10);
+        phrase.getChildren().clear();
     }
     
     @FXML
