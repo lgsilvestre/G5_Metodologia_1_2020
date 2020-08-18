@@ -12,6 +12,7 @@ import Logic.Translate;
 import java.io.IOException;
 import java.net.URL;
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
@@ -69,12 +70,14 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     NodeCorners phraseCorners;
     @FXML
     private Label ncaracteres;
+    ArrayList<Integer> enteros;
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        enteros = new ArrayList<>();
         phrase = new TextFlow();
         pat = Pattern.compile("[a-zA-Z0-9?,]");
         
@@ -100,6 +103,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         });
         
     }    
+    
     public static void limitTextField(TextField textField, int limit, Label ncaracteres) {
         UnaryOperator<Change> textLimitFilter = change -> {
             if (change.isContentChange()) {
@@ -257,7 +261,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     
     @FXML
     private void wordsTyped(KeyEvent event) {
-        limitTextField(wordsField, 199, ncaracteres);
+        limitTextField(wordsField, 999999999, ncaracteres);
         if(event.isControlDown()){
             wordsField.undo();
             event.consume();
@@ -269,7 +273,57 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             event.consume();
         }
     }
-    
+    @FXML
+    private void wordsRead(KeyEvent event){
+        String phraseStr = wordsField.getText();
+        ArrayList<Integer> copiaEnteros = (ArrayList<Integer>) enteros.clone();
+        /*
+        for (int b: copiaEnteros){
+            if(b<=phraseStr.length()){
+                enteros.remove(new Integer(b));
+            }
+        }
+        */
+        
+        
+        if(isOut()){
+            //System.out.println(phraseStr.length());
+            if(enteros.isEmpty()){
+               enteros.add(phraseStr.length()); 
+            }else{
+                //System.out.println("Largo string"+ phraseStr.length());
+                //for (int a : enteros){
+                //    System.out.println(a);
+                //}
+                if((phraseStr.length())%enteros.get(0)==0){
+                    for(Integer a: enteros){
+                    }
+                    if(!enteros.contains(phraseStr.length()-1)){
+                        enteros.add(phraseStr.length()-1);
+                    }
+                }
+            }
+        }
+        int i=0;
+        for (Integer n:enteros){
+            phraseStr = phraseStr.substring(0, n+i)+"\n"+phraseStr.substring(n+i, phraseStr.length());
+            i++;
+        }
+        
+        ObservableList itemsTF = phrase.getChildren();
+        String[] words = phraseStr.split(" ");
+        itemsTF.clear();
+        i = 0;
+        for (String word : words) {
+            if(!word.equals("")){
+                Text itemTF = new Text(word);
+                itemTF.setFont(regularFont);
+                itemsTF.add(itemTF);
+                i++;
+                if(!(i==words.length)) itemsTF.add(new Text(" "));
+            }
+        }
+    }
     public static String normalizeString(String str){
         str=Normalizer.normalize(str,Normalizer.Form.NFKD);
         return str.replaceAll("[^a-z,^A-Z,^0-9]", "");

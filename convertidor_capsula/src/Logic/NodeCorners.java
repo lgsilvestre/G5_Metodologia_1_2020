@@ -71,10 +71,12 @@ public class NodeCorners{
     }
     
     public void showPoints(){
+        /*
         System.out.println("A: "+"("+rotatePoint.X+" "+rotatePoint.Y+")");
         System.out.println("B: "+"("+B.X+" "+B.Y+")");
         System.out.println("C: "+"("+C.X+" "+C.Y+")");
         System.out.println("D: "+"("+D.X+" "+D.Y+")");
+*/
     }
     
     public void setWidth(double width){
