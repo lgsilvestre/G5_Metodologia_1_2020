@@ -111,7 +111,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             
         });
         */
-        phrase.setPrefSize(1190, 1200);
+        phrase.setMaxWidth(1190);
     }    
     public static void limitTextField(TextField textField, int limit, Label ncaracteres) {
         UnaryOperator<Change> textLimitFilter = change -> {
@@ -184,7 +184,12 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             double x = Double.parseDouble(xField.getText());
             double y = Double.parseDouble(yField.getText());
             this.translate(phrase, x, y);
+            if(isOut()){
+            translateAlert.setText("Frase fuera de limite");
+            this.translate(phrase,0,0);
+            }
         }
+        
         
         /*Rota la palabra si y solo si el campo de texto de los grados no esté
         vacío. Utiliza la interface "Rotate".*/
@@ -195,11 +200,13 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             }
             else rotateAlert.setText("Grado no válido");
         } else this.rotate(phrase, 0);
-        if (points) this.showControlPoints(phrase);
         if(isOut()){
-            translateAlert.setText("Frase fuera de limite");
-            setDefault();
+            this.rotate(phrase, 0);
+            rotateAlert.setText("Rotación fuera de limite");
         }
+        if (points) this.showControlPoints(phrase);
+        
+                
     }
     
     
@@ -224,7 +231,6 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     @FXML
     private void wordsTyped(KeyEvent event) {
         limitTextField(wordsField, 500, ncaracteres);
-        System.out.println(wordsField.getText());
         if(event.isControlDown()){
             wordsField.undo();
             event.consume();
