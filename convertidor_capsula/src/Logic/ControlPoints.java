@@ -29,4 +29,15 @@ public interface ControlPoints {
         
         return text;
     }
+    
+    default TextFlow hideControlPoints(TextFlow text) {
+        ObservableList textChildList = text.getChildren();
+        for (int i = 0; i < textChildList.size(); i++) {
+            Text textChild = (Text) textChildList.get(i);
+            if (!textChild.getText().equalsIgnoreCase(" ")){
+                textChild.setText(textChild.getText().substring(1, textChild.getText().length()-1));
+            }
+        }
+        return text;
+    }
 }
