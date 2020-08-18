@@ -87,6 +87,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         rotationField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
 
         phraseCorners = new NodeCorners(0, 0);
+        /*
         phrase.widthProperty().addListener((obs, oldVal, newVal)->{
             System.out.println("new width: "+newVal);
             phraseCorners.setWidth(newVal.doubleValue());
@@ -109,7 +110,8 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             }
             
         });
-        
+        */
+        phrase.setPrefSize(1190, 1200);
     }    
     public static void limitTextField(TextField textField, int limit, Label ncaracteres) {
         UnaryOperator<Change> textLimitFilter = change -> {
@@ -221,7 +223,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
     
     @FXML
     private void wordsTyped(KeyEvent event) {
-        limitTextField(wordsField, 35, ncaracteres);
+        limitTextField(wordsField, 500, ncaracteres);
         System.out.println(wordsField.getText());
         if(event.isControlDown()){
             wordsField.undo();
