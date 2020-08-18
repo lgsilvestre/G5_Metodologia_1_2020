@@ -87,17 +87,6 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
         rotationField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
 
         phraseCorners = new NodeCorners(0, 0);
-        /*
-        phrase.widthProperty().addListener((obs, oldVal, newVal)->{
-            System.out.println("new width: "+newVal);
-            phraseCorners.setWidth(newVal.doubleValue());
-            phraseCorners.updatePoints();
-        });
-        phrase.heightProperty().addListener((obs, oldVal, newVal)->{
-            System.out.println("new height: "+newVal);
-            phraseCorners.setHeight(newVal.doubleValue());
-            phraseCorners.updatePoints();
-        });
         
         phrase.layoutBoundsProperty().addListener((args, oldValue, newValue)->{
             Bounds b = phrase.localToParent(newValue);
@@ -110,7 +99,7 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             }
             
         });
-        */
+        
         phrase.setMaxWidth(1190);
     }    
     public static void limitTextField(TextField textField, int limit, Label ncaracteres) {
@@ -205,19 +194,12 @@ public class MainWindowsController implements Initializable, RotateShape, Transl
             rotateAlert.setText("Rotación fuera de limite");
         }
         if (points) this.showControlPoints(phrase);
-        
-                
     }
     
     
     private boolean isOut(){
         Bounds phraseBounds = phrase.getBoundsInParent();
         if(canvasBounds == null) canvasBounds = canvas.getBoundsInLocal();
-        
-        /*System.out.println(canvasBounds.toString());
-        System.out.println(phraseBounds.toString());
-        System.out.println("Contains: "+canvasBounds.contains(canvasBounds));*/
-        
         return !canvasBounds.contains(phraseBounds);
         
     }
